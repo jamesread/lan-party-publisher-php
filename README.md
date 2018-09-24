@@ -4,7 +4,7 @@ This is repository that contains a specification, and some reference implementat
 
 ## Examples & Reference Implementations
 
-This repository contains a reference implementation of the standard in [php](php). If you want to use Ruby, Python, .NET, GOLang, or whatever, that's fine too as long as you don't mind writing your own. ;)
+This repository contains a reference implementation of the standard in [php](php5+). If you want to use Ruby, Python, .NET, GOLang, or whatever, that's fine too as long as you don't mind writing your own. ;)
 
 ### Using this on your LAN Party Site
 
