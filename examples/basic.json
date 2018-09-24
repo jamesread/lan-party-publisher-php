@@ -1,0 +1,72 @@
+{
+    "$schema": "https:\/\/raw.githubusercontent.com\/jamesread\/lan-party-publishing-api\/master\/schema.json",
+    "libraryVersion": 1,
+    "organisation": {
+        "websiteUrl": null,
+        "steamGroupUrl": null,
+        "bannerImagePngUrl": null,
+        "description": null,
+        "venues": [
+            {
+                "gpsLatitude": null,
+                "gpsLongditude": null,
+                "events": [
+                    {
+                        "start": null,
+                        "finishes": null,
+                        "seatsTotal": null,
+                        "seatsAvailable": null,
+                        "ticketsOnSale": null,
+                        "ticketCurrencyIso4217": null,
+                        "ticketPriceInAdvance": null,
+                        "ticketPriceOnDoor": null,
+                        "isTicketsOnSale": false,
+                        "hasShowers": null,
+                        "sleeping": 0,
+                        "isAlcoholAllowed": 0,
+                        "hasSmokingArea": 0,
+                        "networkConnectionMbps": null,
+                        "internetConnectionMbps": null,
+                        "description": null,
+                        "attendees": null,
+                        "apiVersion": 1,
+                        "siteUniqueId": null,
+                        "name": "Event #1",
+                        "apiType": "Event"
+                    },
+                    {
+                        "start": null,
+                        "finishes": null,
+                        "seatsTotal": null,
+                        "seatsAvailable": null,
+                        "ticketsOnSale": null,
+                        "ticketCurrencyIso4217": null,
+                        "ticketPriceInAdvance": null,
+                        "ticketPriceOnDoor": null,
+                        "isTicketsOnSale": false,
+                        "hasShowers": null,
+                        "sleeping": 0,
+                        "isAlcoholAllowed": 0,
+                        "hasSmokingArea": 0,
+                        "networkConnectionMbps": null,
+                        "internetConnectionMbps": null,
+                        "description": null,
+                        "attendees": null,
+                        "apiVersion": 1,
+                        "siteUniqueId": null,
+                        "name": "Event #2",
+                        "apiType": "Event"
+                    }
+                ],
+                "apiVersion": 1,
+                "siteUniqueId": null,
+                "name": "Our lovely hall",
+                "apiType": "Venue"
+            }
+        ],
+        "apiVersion": 1,
+        "siteUniqueId": null,
+        "name": "My LAN",
+        "apiType": "Organisation"
+    }
+}

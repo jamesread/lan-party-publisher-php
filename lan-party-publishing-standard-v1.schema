@@ -1,0 +1,8 @@
+{
+	"title": "LAN Party Publishing Schema version 1",
+	"definitions": [
+		{
+			"type": "person"
+		}
+	]
+}
