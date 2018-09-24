@@ -11,9 +11,9 @@ The formal JSON Specification is here; [lan-party-publishing-standard-v1.schema]
 The JSON structure is very simple;
 
 * 1x [Organisation](#organisation)
-    * 1 - Many Venue(s)
-        * 1 - Many Events
-            * 0 - Many Attendees.
+    * 1 - Many [Venue(s)](#venue)
+        * 1 - Many [Event(s)](#event)
+            * 0 - Many [Attendees](#attendee)
 
 ## Types
 
