@@ -2,6 +2,16 @@
 
 This is repository that contains a specification, and some reference implementations for a LAN Party Publishing Standard, that is read-only and represented in JSON. The idea is that it can be used by syndication sites like lanlist.org.
 
+## Examples & Reference Implementations
+
+This repository contains a reference implementation of the standard in [php](php). If you want to use Ruby, Python, .NET, GOLang, or whatever, that's fine too as long as you don't mind writing your own. ;)
+
+### Using this on your LAN Party Site
+
+Choose a reference implementation language if there is one in this repository that matches your site, or write your own according to the standard (documented below).
+
+You will need some basic coding skills, but the heavy lifting is done by the reference implementation libraries themselves. You can find several examples in the various directories of this repository. 
+
 ## Formal specification
 
 The formal JSON Specification is here; [lan-party-publishing-standard-v1.schema](lan-party-publising-standard-v1.schema). It is not yet finished.
