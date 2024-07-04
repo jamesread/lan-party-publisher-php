@@ -1,19 +1,18 @@
 <?php
 
-require_once '../main/LanPartyPublishingLibrary.php';
+require_once '../vendor/autoload.php';
 
-$organisation = new Organisation('My LAN');
+use LanPartyPublisherPhp\Publisher;
 
-$venue = new Venue('Our lovely hall');
+$publisher = new Publisher();
 
-$organisation->addVenue($venue);
+$organizer = $publisher->createOrganisation('My Lan Party');
 
-$event1 = new Event('Event #1');
-$venue->addEvent($event1);
+$venue = $organizer->createVenue('My Hall');
 
-$event2 = new Event('Event #2');
-$venue->addEvent($event2);
+$event1 = $venue->createEvent('LAN 1');
+$event2 = $venue->createEvent('LAN 2');
 
-outputJson($organisation);
+$publisher->outputJson();
 
 ?>
