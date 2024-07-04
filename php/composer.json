@@ -2,7 +2,7 @@
     "name": "jamesread/lan-party-publishing-api",
     "description": "A PHP implementation of the LAN Party Publishing Standard",
     "type": "library",
-    "license": "AGPL-v3-only",
+    "license": "AGPL-3.0-only",
     "autoload": {
         "psr-4": {
             "jamesread\\LanPartyPublishingApi\\": "lib/"
