@@ -1,5 +1,5 @@
 {
-    "name": "jamesread/lan-party-publishing-api",
+    "name": "jamesread/lan-party-publisher-php",
     "description": "A PHP implementation of the LAN Party Publishing Standard",
     "type": "library",
     "license": "AGPL-3.0-only",
