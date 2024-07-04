@@ -6,14 +6,14 @@ This is a PHP library that implements the LAN party publishing standard, making 
 
 Normally you should put your calling script and the library in the same subdirectory to keep things together. You should not need to edit the library yourself, as it makes upgrades a real pain in the future. If there are problems with the library, just raise an issue on GitHub.
 
-* Create a new folder for your publisher, and `cd` into it.
+**Create a new folder for your publisher**, and `cd` into it.
 
 ```shell
 user@host: mkdir lan-party-publishing-standard/
 user@host: composer require jamesread/lan-party-publisher-php
 ```
 
-*. Write a "calling script" that uses the library to build the list of JSON events. Look at the several [php examples](examples) to help get you started. The example below shows a simple `index.php` file using PDO to connect to a MySQL database.
+**Write a "calling script"** that uses the library to build the list of JSON events. Look at the several [php examples](examples) to help get you started. The example below shows a simple `index.php` file using PDO to connect to a MySQL database.
 
 ```php
 <?php
