@@ -2,7 +2,7 @@
 
 This is a PHP library that implements the LAN party publishing standard, making it easy to pull your own list of events from your own database, and publish those to the world, in a standard format that can be consumed by other sites (like http://lanlist.info).
 
-# Using the PHP Library
+## Using the PHP Library
 
 Normally you should put your calling script and the library in the same subdirectory to keep things together. You should not need to edit the library yourself, as it makes upgrades a real pain in the future. If there are problems with the library, just raise an issue on GitHub.
 
