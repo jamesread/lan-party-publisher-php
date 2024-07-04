@@ -14,7 +14,7 @@ You will need some basic coding skills, but the heavy lifting is done by the ref
 
 ## Formal specification
 
-The formal JSON Specification is here; [lan-party-publishing-standard-v1.schema](lan-party-publising-standard-v1.schema). It is not yet finished.
+The formal JSON Specification is here; [lan-party-publishing-standard-v1.schema](lan-party-publishing-standard-v1.schema). It is not yet finished.
 
 ## Human readable specification documentation
 
