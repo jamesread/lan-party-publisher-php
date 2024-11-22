@@ -25,7 +25,7 @@ class Event extends ModelBase
 
     public bool $isTicketsOnSale = false;
 
-    public int $sleeping = SleepingEnum::NOT_ARRANGED->value;
+    public int $sleeping;
 
     public bool $hasShowers = false;
 
@@ -41,6 +41,11 @@ class Event extends ModelBase
 
     /** @var array<int, Attendee> */
     public array $attendees = [];
+
+    public function __construct()
+    {
+        $this->sleeping = SleepingEnum::NOT_ARRANGED->value;
+    }
 
     public function setStart(DateTime $start): void
     {
