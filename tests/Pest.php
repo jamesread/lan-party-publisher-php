@@ -44,7 +44,7 @@ expect()->extend('toBeOne', function () {
 function createSchemaStructure(): array
 {
     return [
-        '$schema' => 'https://raw.githubusercontent.com/jamesread/lan-party-publishing-api/master/schema.json', // TODO
+        '$schema' => 'https://raw.githubusercontent.com/jamesread/lan-party-publishing-api/master/schema.json',
         'generator' => 'lan-party-publisher-php ' . InstalledVersions::getVersion('jamesread/lan-party-publisher-php'),
     ];
 }
