@@ -37,12 +37,18 @@ class Organisation extends ModelBase
         $this->venues[] = $venue;
     }
 
-    public function getVenue(int|string $venue): Venue
+    public function getVenue(int|string $venue): ?Venue
     {
-        if (is_int($venue)) {
+        if (is_int($venue) && array_key_exists($venue, $this->venues)) {
             return $this->venues[$venue];
         }
 
-        return $this->venues[array_search($venue, array_column($this->venues, 'name'))];
+        $keyName = array_search($venue, array_column($this->venues, 'name'));
+
+        if (array_key_exists($keyName, $this->venues)) {
+            return $this->venues[$keyName];
+        }
+
+        return null;
     }
 }
