@@ -133,7 +133,7 @@ it('produces the desired result for example `Multiple Events`', function () {
                 'internetConnectionMbps' => 1000,
                 'description' => 'Test Description',
             ],
-        ]
+        ],
     ];
 
     $events = array_map(function (array $value) {
