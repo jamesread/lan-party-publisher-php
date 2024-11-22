@@ -2,7 +2,8 @@
 
 namespace LanPartyPublisherPhp;
 
-class ModelBase {
+class ModelBase
+{
     public function __construct(
         public string|null $name = null,
         public string $apiType = '?',

@@ -2,15 +2,17 @@
 
 namespace LanPartyPublisherPhp;
 
-class Venue extends ModelBase {
+class Venue extends ModelBase
+{
     public $gpsLatitude;
 
     public $gpsLongditude;
 
-    /** @var array<int, Event> $events */
+    /** @var array<int, Event> */
     public array $events;
 
-    public function createEvent(string $name): Event {
+    public function createEvent(string $name): Event
+    {
         $event = new Event($name);
 
         $this->addEvent($event);
@@ -18,8 +20,8 @@ class Venue extends ModelBase {
         return $event;
     }
 
-    public function addEvent(Event $event) {
+    public function addEvent(Event $event)
+    {
         $this->events[] = $event;
     }
 }
-

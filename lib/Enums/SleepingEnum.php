@@ -2,7 +2,8 @@
 
 namespace LanPartyPublisherPhp\Enums;
 
-enum SleepingEnum: int {
+enum SleepingEnum: int
+{
     case NOT_ARRANGED = 0;
     case NOT_OVERNIGHT = 1;
     case PRIVATE_ROOMS = 2;

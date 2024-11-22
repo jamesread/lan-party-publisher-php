@@ -2,5 +2,6 @@
 
 namespace LanPartyPublisherPhp;
 
-class Attendee extends ModelBase {
+class Attendee extends ModelBase
+{
 }

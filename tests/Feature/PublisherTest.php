@@ -1,6 +1,5 @@
 <?php
 
-use Composer\InstalledVersions;
 use LanPartyPublisherPhp\Venue;
 
 it('Correctly outputs JSON object with just the `Organisation`', function () {
@@ -120,7 +119,7 @@ it('Correctly outputs multiple venues', function () {
             'steamGroupUrl' => null,
             'bannerImagePngUrl' => null,
             'description' => null,
-            'venues' => array_map(fn($venue) => [...(array) $venue, 'events' => array_map(fn($event) => (array) $event, $venue->events)], $venues),
+            'venues' => array_map(fn ($venue) => [...(array) $venue, 'events' => array_map(fn ($event) => (array) $event, $venue->events)], $venues),
         ],
     ];
 
@@ -157,7 +156,7 @@ it('Correctly outputs multiple events', function () {
             'bannerImagePngUrl' => null,
             'description' => null,
             'venues' => [
-                [...(array) $venue, 'events' => array_map(fn($event) => (array) $event, $events)],
+                [...(array) $venue, 'events' => array_map(fn ($event) => (array) $event, $events)],
             ],
         ],
     ];

@@ -5,7 +5,8 @@ namespace LanPartyPublisherPhp;
 use DateTime;
 use LanPartyPublisherPhp\Enums\SleepingEnum;
 
-class Event extends ModelBase {
+class Event extends ModelBase
+{
     public DateTime|null $start = null;
 
     public DateTime|null $finish = null;
@@ -38,19 +39,21 @@ class Event extends ModelBase {
 
     public string $description;
 
-    /** @var array<int, Attendee> $attendees */
+    /** @var array<int, Attendee> */
     public array $attendees = [];
 
-    public function setStart(DateTime $start): void {
+    public function setStart(DateTime $start): void
+    {
         $this->start = $start;
     }
 
-    public function setFinish(DateTime $finish): void {
+    public function setFinish(DateTime $finish): void
+    {
         $this->finish = $finish;
     }
 
-    public function addAttendee(Attendee $attendee): void {
+    public function addAttendee(Attendee $attendee): void
+    {
         $this->attendees[] = $attendee;
     }
 }
-
