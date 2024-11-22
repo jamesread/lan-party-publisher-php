@@ -42,9 +42,18 @@ class Event extends ModelBase
     /** @var array<int, Attendee> */
     public array $attendees = [];
 
-    public function __construct()
-    {
-        parent::__construct();
+    public function __construct(
+        string|null $name = null,
+        string $apiType = '?',
+        int $apiVersion = 1,
+        string|int|null $siteUniqueId = null,
+    ) {
+        parent::__construct(
+            $name,
+            $apiType,
+            $apiVersion,
+            $siteUniqueId,
+        );
 
         $this->sleeping = SleepingEnum::NOT_ARRANGED->value;
     }
