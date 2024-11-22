@@ -3,15 +3,12 @@
 namespace LanPartyPublisherPhp;
 
 class ModelBase {
-    public $apiType = '?';
-    public $apiVersion = 1;
-    public $siteUniqueId = null;
-    public $name = null;
-
-    public function __construct($name = null) {
-        $reflection = new \ReflectionClass($this);
-        $this->apiType = $reflection->getShortName();
-        $this->name = $name;
+    public function __construct(
+        public string|null $name = null,
+        public string $apiType = '?',
+        public int $apiVersion = 1,
+        public string|int|null $siteUniqueId = null,
+    ) {
+        $this->apiType = get_class($this);
     }
 }
-

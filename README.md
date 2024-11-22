@@ -18,3 +18,13 @@ user@host: composer require jamesread/lan-party-publisher-php
 **index.php** - Start with the example code; [withPdoMySQLDatabase.php](examples/withPdoMySQLDatabase.php)
 
 Adapt the above code to your own database structure, and view the resulting JSON in your browser.
+
+Basic Example:
+
+```php
+```
+
+Laravel Example:
+
+```php
+```

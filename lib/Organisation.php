@@ -3,23 +3,27 @@
 namespace LanPartyPublisherPhp;
 
 class Organisation extends ModelBase {
-    public $websiteUrl;
-    public $steamGroupUrl;
-    public $bannerImagePngUrl;
-    public $description;
+    public ?string $websiteUrl = null;
 
-    public $venues;
+    public ?string $steamGroupUrl = null;
 
-    public function addVenue(Venue $venue) {
-        $this->venues[] = $venue;
-    }
+    public ?string $bannerImagePngUrl = null;
 
-    public function createVenue($name) {
+    public ?string $description = null;
+
+    /** @var array<int, Venue> $venues */
+    public array $venues = [];
+
+    public function createVenue($name): Venue {
         $venue = new Venue($name);
 
         $this->addVenue($venue);
 
         return $venue;
+    }
+
+    public function addVenue(Venue $venue): void {
+        $this->venues[] = $venue;
     }
 }
 

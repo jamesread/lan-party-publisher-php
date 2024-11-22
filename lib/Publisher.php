@@ -2,29 +2,34 @@
 
 namespace LanPartyPublisherPhp;
 
+use Composer\InstalledVersions;
+
 class Publisher {
-    private ?Organisation $organizer;
+    private ?Organisation $organizer = null;
 
-    function outputJson(Organisation $organisation = null) {
-        if ($organisation == null) {
-            $organisation = $this->organizer;
-        }
-
-        $generator = 'lan-party-publisher-php ' . \Composer\InstalledVersions::getVersion('jamesread/lan-party-publisher-php');
-
-        $root = array();
-        $root['$schema'] = 'https://raw.githubusercontent.com/jamesread/lan-party-publishing-api/master/schema.json';
-        $root['generator'] = $generator;
-        $root['organisation'] = $organisation;
-
-        header("Content-Type: application/json"); 
-        echo json_encode($root, JSON_PRETTY_PRINT);
-        exit;
+    public static function make(): self {
+        return new self();
     }
 
-    function createOrganisation($name) {
+    public function createOrganisation(string $name): self {
         $this->organizer = new Organisation($name);
 
+        return $this;
+    }
+
+    public function getOrganisation(): Organisation {
         return $this->organizer;
+    }
+
+    public function toJson(): string {
+        $generator = 'lan-party-publisher-php ' . InstalledVersions::getVersion('jamesread/lan-party-publisher-php');
+
+        $data = [
+            '$schema' => 'https://raw.githubusercontent.com/jamesread/lan-party-publishing-api/master/schema.json',
+            'generator' => $generator,
+            'organisation' => $this->organizer
+        ];
+
+        return json_encode($data, JSON_PRETTY_PRINT);
     }
 }

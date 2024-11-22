@@ -2,35 +2,54 @@
 
 namespace LanPartyPublisherPhp;
 
+use DateTime;
+use LanPartyPublisherPhp\Enums\SleepingEnum;
+
 class Event extends ModelBase {
-    public $start;
-    public $finish;
-    public $seatsTotal;
-    public $seatsAvailable;
-    public $ticketsOnSale;
-    public $ticketCurrencyIso4217;
-    public $ticketPriceInAdvance;
-    public $ticketPriceOnDoor;
-    public $isTicketsOnSale = false;
-    public $hasShowers;
-    public $sleeping = 0; // NOT_ARRANGED. NOT_OVERNIGHT. PRIVATE_ROOMS. SHARED_ROOM. SHARED_ROOM_AND_CAMPING.
-    public $isAlcoholAllowed = 0;
-    public $hasSmokingArea = 0;
-    public $networkConnectionMbps;
-    public $internetConnectionMbps;
-    public $description;
+    public DateTime|null $start = null;
 
-    public $attendees;
+    public DateTime|null $finish = null;
 
-    public function setStart(\DateTime $start) {
+    public int|null $seatsTotal = null;
+
+    public int|null $seatsAvailable = null;
+
+    public string $ticketsOnSale; // Deprecated in favour of isTicketsOnSale
+
+    public string $ticketCurrencyIso4217;
+
+    public float|int|null $ticketPriceInAdvance = null;
+
+    public float|int|null $ticketPriceOnDoor = null;
+
+    public bool $isTicketsOnSale = false;
+
+    public int $sleeping = SleepingEnum::NOT_ARRANGED->value;
+
+    public bool $hasShowers = false;
+
+    public bool $isAlcoholAllowed = false;
+
+    public bool $hasSmokingArea = false;
+
+    public int $networkConnectionMbps;
+
+    public int $internetConnectionMbps;
+
+    public string $description;
+
+    /** @var array<int, Attendee> $attendees */
+    public array $attendees = [];
+
+    public function setStart(DateTime $start): void {
         $this->start = $start;
     }
 
-    public function setFinish(\DateTime $finish) {
+    public function setFinish(DateTime $finish): void {
         $this->finish = $finish;
     }
 
-    public function addAttendee(Attendee $attendee) {
+    public function addAttendee(Attendee $attendee): void {
         $this->attendees[] = $attendee;
     }
 }
