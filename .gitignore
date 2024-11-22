@@ -6,5 +6,6 @@ build
 coverage
 docs
 psalm.xml
+phpunit.xml
 vendor
 .phpunit.cache
