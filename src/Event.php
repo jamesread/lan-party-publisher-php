@@ -44,6 +44,8 @@ class Event extends ModelBase
 
     public function __construct()
     {
+        parent::__construct();
+
         $this->sleeping = SleepingEnum::NOT_ARRANGED->value;
     }
 
