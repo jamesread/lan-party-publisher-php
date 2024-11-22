@@ -9,3 +9,4 @@ psalm.xml
 phpunit.xml
 vendor
 .phpunit.cache
+composer.lock
