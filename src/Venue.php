@@ -14,6 +14,21 @@ class Venue extends ModelBase
     /** @var array<int, Event> */
     public array $events = [];
 
+    public static function make(?string $name, array $opts = []): Venue
+    {
+        $venue = new Venue($name);
+
+        if (count($opts) > 0) {
+            foreach ($opts as $key => $value) {
+                if (property_exists($venue, $key)) {
+                    $venue->{$key} = $value;
+                }
+            }
+        }
+
+        return $venue;
+    }
+
     public function createEvent(string $name, array $opts = []): Event
     {
         $event = new Event($name);

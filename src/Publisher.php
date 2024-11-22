@@ -3,6 +3,7 @@
 namespace LanPartyPublisherPhp;
 
 use Composer\InstalledVersions;
+use Exception;
 
 class Publisher
 {
@@ -16,6 +17,50 @@ class Publisher
     public function createOrganisation(string $name): self
     {
         $this->organizer = new Organisation($name);
+
+        return $this;
+    }
+
+    public function createVenue(string $name, array $opts = []): self
+    {
+        $this->organizer->createVenue($name, $opts);
+
+        return $this;
+    }
+
+    public function addVenues(array $venues): self
+    {
+        foreach ($venues as $venue) {
+            $this->organizer->addVenue($venue);
+        }
+
+        return $this;
+    }
+
+    public function createEvent(int|string $venue, string $name, array $opts = []): self
+    {
+        $venue = $this->organizer->getVenue($venue);
+
+        if (is_null($venue)) {
+            throw new Exception('Venue not found');
+        }
+
+        $venue->createEvent($name, $opts);
+
+        return $this;
+    }
+
+    public function addEvents(int|string $venue, array $events): self
+    {
+        $venue = $this->organizer->getVenue($venue);
+
+        if (is_null($venue)) {
+            throw new Exception('Venue not found');
+        }
+
+        foreach ($events as $event) {
+            $venue->addEvent($event);
+        }
 
         return $this;
     }

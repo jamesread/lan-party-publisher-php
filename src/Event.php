@@ -3,6 +3,7 @@
 namespace LanPartyPublisherPhp;
 
 use DateTime;
+use Exception;
 use LanPartyPublisherPhp\Enums\SleepingEnum;
 
 class Event extends ModelBase
@@ -56,6 +57,30 @@ class Event extends ModelBase
         );
 
         $this->sleeping = SleepingEnum::NOT_ARRANGED->value;
+    }
+
+    public static function make(?string $name = null, array $opts = []): self
+    {
+        $event = new self($name);
+
+        if (count($opts) > 0) {
+            foreach ($opts as $key => $value) {
+                if (property_exists($event, $key)) {
+
+                    if ($key === 'start' || $key === 'finish') {
+                        if (! $value instanceof DateTime) {
+                            throw new Exception('`start` and `finish` must be an instance of DateTime');
+                        }
+
+                        $event->{$key} = $value->format('Y-m-d H:i:s');
+                    } else {
+                        $event->{$key} = $value;
+                    }
+                }
+            }
+        }
+
+        return $event;
     }
 
     public function setStart(DateTime $start): void
