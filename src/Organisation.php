@@ -15,9 +15,17 @@ class Organisation extends ModelBase
     /** @var array<int, Venue> */
     public array $venues = [];
 
-    public function createVenue($name): Venue
+    public function createVenue($name, array $opts = []): Venue
     {
         $venue = new Venue($name);
+
+        if (count($opts) > 0) {
+            foreach ($opts as $key => $value) {
+                if (property_exists($venue, $key)) {
+                    $venue->{$key} = $value;
+                }
+            }
+        }
 
         $this->addVenue($venue);
 

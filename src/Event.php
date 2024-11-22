@@ -7,15 +7,15 @@ use LanPartyPublisherPhp\Enums\SleepingEnum;
 
 class Event extends ModelBase
 {
-    public DateTime|null $start = null;
+    public string|null $start = null;
 
-    public DateTime|null $finish = null;
+    public string|null $finish = null;
 
     public int|null $seatsTotal = null;
 
     public int|null $seatsAvailable = null;
 
-    public string $ticketsOnSale; // Deprecated in favour of isTicketsOnSale
+    public string $ticketsOnSale;
 
     public string $ticketCurrencyIso4217;
 
@@ -44,12 +44,12 @@ class Event extends ModelBase
 
     public function setStart(DateTime $start): void
     {
-        $this->start = $start;
+        $this->start = $start->format('Y-m-d H:i:s');
     }
 
     public function setFinish(DateTime $finish): void
     {
-        $this->finish = $finish;
+        $this->finish = $finish->format('Y-m-d H:i:s');
     }
 
     public function addAttendee(Attendee $attendee): void

@@ -2,6 +2,8 @@
 
 namespace LanPartyPublisherPhp;
 
+use ReflectionClass;
+
 class ModelBase
 {
     public function __construct(
@@ -10,6 +12,6 @@ class ModelBase
         public int $apiVersion = 1,
         public string|int|null $siteUniqueId = null,
     ) {
-        $this->apiType = get_class($this);
+        $this->apiType = (new ReflectionClass($this))->getShortName();
     }
 }

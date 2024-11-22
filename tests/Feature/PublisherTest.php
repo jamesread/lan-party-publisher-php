@@ -1,9 +1,10 @@
 <?php
 
+use LanPartyPublisherPhp\Publisher;
 use LanPartyPublisherPhp\Venue;
 
 it('correctly outputs JSON object with just the `Organisation`', function () {
-    $publisher = LanPartyPublisherPhp\Publisher::make()
+    $publisher = Publisher::make()
         ->createOrganisation('Test Organisation');
 
     $json = $publisher->toJson();
@@ -12,7 +13,7 @@ it('correctly outputs JSON object with just the `Organisation`', function () {
         ...createSchemaStructure(),
         'organisation' => [
             'name' => 'Test Organisation',
-            'apiType' => 'LanPartyPublisherPhp\Organisation',
+            'apiType' => 'Organisation',
             'apiVersion' => 1,
             'siteUniqueId' => null,
             'websiteUrl' => null,
@@ -27,7 +28,7 @@ it('correctly outputs JSON object with just the `Organisation`', function () {
 });
 
 it('correctly outputs JSON object with the `Oganisation` and `Venue`', function () {
-    $publisher = LanPartyPublisherPhp\Publisher::make()
+    $publisher = Publisher::make()
         ->createOrganisation('Test Organisation');
 
     $organisation = $publisher->getOrganisation();
@@ -40,7 +41,7 @@ it('correctly outputs JSON object with the `Oganisation` and `Venue`', function 
         ...createSchemaStructure(),
         'organisation' => [
             'name' => 'Test Organisation',
-            'apiType' => 'LanPartyPublisherPhp\Organisation',
+            'apiType' => 'Organisation',
             'apiVersion' => 1,
             'siteUniqueId' => null,
             'websiteUrl' => null,
@@ -57,7 +58,7 @@ it('correctly outputs JSON object with the `Oganisation` and `Venue`', function 
 });
 
 it('correctly outputs JSON object with the `Oganisation`, `Venue` and `Event`', function () {
-    $publisher = LanPartyPublisherPhp\Publisher::make()
+    $publisher = Publisher::make()
         ->createOrganisation('Test Organisation');
 
     $organisation = $publisher->getOrganisation();
@@ -72,7 +73,7 @@ it('correctly outputs JSON object with the `Oganisation`, `Venue` and `Event`', 
         ...createSchemaStructure(),
         'organisation' => [
             'name' => 'Test Organisation',
-            'apiType' => 'LanPartyPublisherPhp\Organisation',
+            'apiType' => 'Organisation',
             'apiVersion' => 1,
             'siteUniqueId' => null,
             'websiteUrl' => null,
@@ -89,7 +90,7 @@ it('correctly outputs JSON object with the `Oganisation`, `Venue` and `Event`', 
 });
 
 it('correctly outputs `multiple venues`', function () {
-    $publisher = LanPartyPublisherPhp\Publisher::make()
+    $publisher = Publisher::make()
         ->createOrganisation('Test Organisation');
 
     $organisation = $publisher->getOrganisation();
@@ -112,7 +113,7 @@ it('correctly outputs `multiple venues`', function () {
         ...createSchemaStructure(),
         'organisation' => [
             'name' => 'Test Organisation',
-            'apiType' => 'LanPartyPublisherPhp\Organisation',
+            'apiType' => 'Organisation',
             'apiVersion' => 1,
             'siteUniqueId' => null,
             'websiteUrl' => null,
@@ -127,7 +128,7 @@ it('correctly outputs `multiple venues`', function () {
 });
 
 it('correctly outputs `multiple events`', function () {
-    $publisher = LanPartyPublisherPhp\Publisher::make()
+    $publisher = Publisher::make()
         ->createOrganisation('Test Organisation');
 
     $organisation = $publisher->getOrganisation();
@@ -148,7 +149,7 @@ it('correctly outputs `multiple events`', function () {
         ...createSchemaStructure(),
         'organisation' => [
             'name' => 'Test Organisation',
-            'apiType' => 'LanPartyPublisherPhp\Organisation',
+            'apiType' => 'Organisation',
             'apiVersion' => 1,
             'siteUniqueId' => null,
             'websiteUrl' => null,
@@ -157,6 +158,128 @@ it('correctly outputs `multiple events`', function () {
             'description' => null,
             'venues' => [
                 [...(array) $venue, 'events' => array_map(fn ($event) => (array) $event, $events)],
+            ],
+        ],
+    ];
+
+    expect(json_decode($json, true))->toBe($expected);
+});
+
+it('correctly outputs a `venue` with custom properties', function () {
+    $publisher = Publisher::make()
+        ->createOrganisation('Test Organisation');
+
+    $organisation = $publisher->getOrganisation();
+
+    $organisation->createVenue('Test Venue', [
+        'gpsLatitude' => 51.5072,
+        'gpsLongditude' => 0.1276,
+    ]);
+
+    $json = $publisher->toJson();
+
+    $expected = [
+        ...createSchemaStructure(),
+        'organisation' => [
+            'name' => 'Test Organisation',
+            'apiType' => 'Organisation',
+            'apiVersion' => 1,
+            'siteUniqueId' => null,
+            'websiteUrl' => null,
+            'steamGroupUrl' => null,
+            'bannerImagePngUrl' => null,
+            'description' => null,
+            'venues' => [
+                [
+                    'name' => 'Test Venue',
+                    'apiType' => 'Venue',
+                    'apiVersion' => 1,
+                    'siteUniqueId' => null,
+                    'gpsLatitude' => 51.5072,
+                    'gpsLongditude' => 0.1276,
+                    'events' => [],
+                ],
+            ],
+        ],
+    ];
+
+    expect(json_decode($json, true))->toBe($expected);
+});
+
+it('correctly outputs a `event` with custom properties', function () {
+    $publisher = Publisher::make()
+        ->createOrganisation('Test Organisation');
+
+    $organisation = $publisher->getOrganisation();
+
+    $venue = $organisation->createVenue('Test Venue');
+
+    $venue->createEvent('Test Event', [
+        'start' => DateTime::createFromFormat('Y-m-d H:i:s', '2021-01-01 00:00:00'),
+        'finish' => DateTime::createFromFormat('Y-m-d H:i:s', '2021-01-02 00:00:00'),
+        'seatsTotal' => 100,
+        'seatsAvailable' => 50,
+        'ticketsOnSale' => 'Yes',
+        'ticketCurrencyIso4217' => 'GBP',
+        'ticketPriceInAdvance' => 10.99,
+        'ticketPriceOnDoor' => 15.99,
+        'isTicketsOnSale' => true,
+        'sleeping' => 1,
+        'hasShowers' => true,
+        'isAlcoholAllowed' => true,
+        'hasSmokingArea' => true,
+        'networkConnectionMbps' => 1000,
+        'internetConnectionMbps' => 1000,
+        'description' => 'Test Description',
+    ]);
+
+    $json = $publisher->toJson();
+
+    $expected = [
+        ...createSchemaStructure(),
+        'organisation' => [
+            'name' => 'Test Organisation',
+            'apiType' => 'Organisation',
+            'apiVersion' => 1,
+            'siteUniqueId' => null,
+            'websiteUrl' => null,
+            'steamGroupUrl' => null,
+            'bannerImagePngUrl' => null,
+            'description' => null,
+            'venues' => [
+                [
+                    'name' => 'Test Venue',
+                    'apiType' => 'Venue',
+                    'apiVersion' => 1,
+                    'siteUniqueId' => null,
+                    'gpsLatitude' => null,
+                    'gpsLongditude' => null,
+                    'events' => [
+                        [
+                            'name' => 'Test Event',
+                            'apiType' => 'Event',
+                            'apiVersion' => 1,
+                            'siteUniqueId' => null,
+                            'start' => '2021-01-01 00:00:00',
+                            'finish' => '2021-01-02 00:00:00',
+                            'seatsTotal' => 100,
+                            'seatsAvailable' => 50,
+                            'ticketsOnSale' => 'Yes',
+                            'ticketCurrencyIso4217' => 'GBP',
+                            'ticketPriceInAdvance' => 10.99,
+                            'ticketPriceOnDoor' => 15.99,
+                            'isTicketsOnSale' => true,
+                            'sleeping' => 1,
+                            'hasShowers' => true,
+                            'isAlcoholAllowed' => true,
+                            'hasSmokingArea' => true,
+                            'networkConnectionMbps' => 1000,
+                            'internetConnectionMbps' => 1000,
+                            'description' => 'Test Description',
+                            'attendees' => [],
+                        ],
+                    ],
+                ],
             ],
         ],
     ];
