@@ -2,7 +2,7 @@
 
 use LanPartyPublisherPhp\Venue;
 
-it('Correctly outputs JSON object with just the `Organisation`', function () {
+it('correctly outputs JSON object with just the `Organisation`', function () {
     $publisher = LanPartyPublisherPhp\Publisher::make()
         ->createOrganisation('Test Organisation');
 
@@ -26,7 +26,7 @@ it('Correctly outputs JSON object with just the `Organisation`', function () {
     expect(json_decode($json, true))->toBe($expected);
 });
 
-it('Correctly outputs JSON object with the `Oganisation` and `Venue`', function () {
+it('correctly outputs JSON object with the `Oganisation` and `Venue`', function () {
     $publisher = LanPartyPublisherPhp\Publisher::make()
         ->createOrganisation('Test Organisation');
 
@@ -56,7 +56,7 @@ it('Correctly outputs JSON object with the `Oganisation` and `Venue`', function 
     expect(json_decode($json, true))->toBe($expected);
 });
 
-it('Correctly outputs JSON object with the `Oganisation`, `Venue` and `Event`', function () {
+it('correctly outputs JSON object with the `Oganisation`, `Venue` and `Event`', function () {
     $publisher = LanPartyPublisherPhp\Publisher::make()
         ->createOrganisation('Test Organisation');
 
@@ -88,7 +88,7 @@ it('Correctly outputs JSON object with the `Oganisation`, `Venue` and `Event`', 
     expect(json_decode($json, true))->toBe($expected);
 });
 
-it('Correctly outputs multiple venues', function () {
+it('correctly outputs `multiple venues`', function () {
     $publisher = LanPartyPublisherPhp\Publisher::make()
         ->createOrganisation('Test Organisation');
 
@@ -126,7 +126,7 @@ it('Correctly outputs multiple venues', function () {
     expect(json_decode($json, true))->toBe($expected);
 });
 
-it('Correctly outputs multiple events', function () {
+it('correctly outputs `multiple events`', function () {
     $publisher = LanPartyPublisherPhp\Publisher::make()
         ->createOrganisation('Test Organisation');
 
