@@ -23,7 +23,7 @@ class Venue extends ModelBase
                 if (property_exists($event, $key)) {
 
                     if ($key === 'start' || $key === 'finish') {
-                        if (!$value instanceof DateTime) {
+                        if (! $value instanceof DateTime) {
                             throw new Exception('`start` and `finish` must be an instance of DateTime');
                         }
 
