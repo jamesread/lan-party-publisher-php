@@ -1,2 +1,2 @@
 phpstan:
-	php vendor/bin/phpstan analyse lib --level 5
+	php vendor/bin/phpstan analyse --memory-limit=512M

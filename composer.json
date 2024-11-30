@@ -30,6 +30,7 @@
         "sort-packages": true
     },
     "scripts": {
+        "analyse": "./vendor/bin/phpstan analyse --memory-limit=512M",
         "lint": "vendor/bin/pint --preset psr12",
         "lint:test": "vendor/bin/pint --preset psr12 --test"
     }
