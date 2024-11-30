@@ -1,0 +1,41 @@
+<?php return array(
+    'root' => array(
+        'name' => 'jamesread/lan-party-publisher-php',
+        'pretty_version' => 'dev-master',
+        'version' => 'dev-master',
+        'reference' => '3d005f512bbfb3888ea29511aaeb1c823f23029f',
+        'type' => 'library',
+        'install_path' => __DIR__ . '/../../',
+        'aliases' => array(),
+        'dev' => true,
+    ),
+    'versions' => array(
+        'jamesread/lan-party-publisher-php' => array(
+            'pretty_version' => 'dev-master',
+            'version' => 'dev-master',
+            'reference' => '3d005f512bbfb3888ea29511aaeb1c823f23029f',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../../',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
+        'laravel/pint' => array(
+            'pretty_version' => 'v1.18.3',
+            'version' => '1.18.3.0',
+            'reference' => 'cef51821608239040ab841ad6e1c6ae502ae3026',
+            'type' => 'project',
+            'install_path' => __DIR__ . '/../laravel/pint',
+            'aliases' => array(),
+            'dev_requirement' => true,
+        ),
+        'phpstan/phpstan' => array(
+            'pretty_version' => '1.12.12',
+            'version' => '1.12.12.0',
+            'reference' => 'b5ae1b88f471d3fd4ba1aa0046234b5ca3776dd0',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../phpstan/phpstan',
+            'aliases' => array(),
+            'dev_requirement' => true,
+        ),
+    ),
+);

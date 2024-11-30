@@ -1,20 +1,36 @@
 {
     "name": "jamesread/lan-party-publisher-php",
     "description": "A PHP implementation of the LAN Party Publishing Standard",
-    "type": "library",
     "license": "AGPL-3.0-only",
-    "autoload": {
-        "psr-4": {
-            "LanPartyPublisherPhp\\": "lib/"
-        }
-    },
+    "type": "library",
     "authors": [
         {
             "name": "jamesread",
             "email": "contact@jread.com"
         }
     ],
+    "require": {
+        "php": "^8.1",
+        "ext-json": "*",
+        "composer-runtime-api": "^2.2"
+    },
     "require-dev": {
-        "phpstan/phpstan": "^1.11"
+        "phpstan/phpstan": "^1.11",
+        "laravel/pint": "^1.18"
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "autoload": {
+        "psr-4": {
+            "LanPartyPublisherPhp\\": "lib/"
+        }
+    },
+    "config": {
+        "allow-plugins": {},
+        "sort-packages": true
+    },
+    "scripts": {
+        "lint": "vendor/bin/pint --preset psr12",
+        "lint:test": "vendor/bin/pint --preset psr12 --test"
     }
 }
