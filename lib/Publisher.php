@@ -2,10 +2,12 @@
 
 namespace LanPartyPublisherPhp;
 
-class Publisher {
+class Publisher
+{
     private ?Organisation $organizer;
 
-    function outputJson(Organisation $organisation = null) {
+    public function outputJson(?Organisation $organisation = null)
+    {
         if ($organisation == null) {
             $organisation = $this->organizer;
         }
@@ -17,12 +19,13 @@ class Publisher {
         $root['generator'] = $generator;
         $root['organisation'] = $organisation;
 
-        header("Content-Type: application/json"); 
+        header("Content-Type: application/json");
         echo json_encode($root, JSON_PRETTY_PRINT);
         exit;
     }
 
-    function createOrganisation($name) {
+    public function createOrganisation($name)
+    {
         $this->organizer = new Organisation($name);
 
         return $this->organizer;

@@ -14,5 +14,3 @@ $event1 = $venue->createEvent('LAN 1');
 $event2 = $venue->createEvent('LAN 2');
 
 $publisher->outputJson();
-
-?>
