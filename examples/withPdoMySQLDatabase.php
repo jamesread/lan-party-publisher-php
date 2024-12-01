@@ -37,5 +37,3 @@ foreach ($stmt->fetchAll() as $dbVenue) {
 }
 
 $publisher->outputJson();
-
-?>

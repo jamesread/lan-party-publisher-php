@@ -2,7 +2,8 @@
 
 namespace LanPartyPublisherPhp;
 
-class Event extends ModelBase {
+class Event extends ModelBase
+{
     public $start;
     public $finish;
     public $seatsTotal;
@@ -22,16 +23,18 @@ class Event extends ModelBase {
 
     public $attendees;
 
-    public function setStart(\DateTime $start) {
+    public function setStart(\DateTime $start)
+    {
         $this->start = $start;
     }
 
-    public function setFinish(\DateTime $finish) {
+    public function setFinish(\DateTime $finish)
+    {
         $this->finish = $finish;
     }
 
-    public function addAttendee(Attendee $attendee) {
+    public function addAttendee(Attendee $attendee)
+    {
         $this->attendees[] = $attendee;
     }
 }
-

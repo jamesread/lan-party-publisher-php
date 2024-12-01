@@ -2,7 +2,8 @@
 
 namespace LanPartyPublisherPhp;
 
-class Organisation extends ModelBase {
+class Organisation extends ModelBase
+{
     public $websiteUrl;
     public $steamGroupUrl;
     public $bannerImagePngUrl;
@@ -10,11 +11,13 @@ class Organisation extends ModelBase {
 
     public $venues;
 
-    public function addVenue(Venue $venue) {
+    public function addVenue(Venue $venue)
+    {
         $this->venues[] = $venue;
     }
 
-    public function createVenue($name) {
+    public function createVenue($name)
+    {
         $venue = new Venue($name);
 
         $this->addVenue($venue);
@@ -22,4 +25,3 @@ class Organisation extends ModelBase {
         return $venue;
     }
 }
-
