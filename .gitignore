@@ -1,7 +1,3 @@
-# Composer Related
-composer.lock
-/vendor
-
 # Caches
 .phpunit.cache
 .phpunit.result.cache
@@ -13,6 +9,4 @@ composer.lock
 /.vscode
 
 # Misc
-phpunit.xml
-/docs
 /coverage
