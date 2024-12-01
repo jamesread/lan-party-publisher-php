@@ -1,16 +1,34 @@
 <?php
 
-require_once '../vendor/autoload.php';
-
+use DateTime;
 use LanPartyPublisherPhp\Publisher;
 
-$publisher = new Publisher();
+$jsonOutput = Publisher::make()
+    ->createOrganisation('Test Organisation')
+    ->createVenue('Test Venue', [
+        'gpsLatitude' => null,
+        'gpsLongditude' => null,
+    ])
+    ->createEvent('Test Venue', 'Test Event', [
+        'start' => DateTime::createFromFormat('Y-m-d H:i:s', '2021-01-01 00:00:00'),
+        'finish' => DateTime::createFromFormat('Y-m-d H:i:s', '2021-01-02 00:00:00'),
+        'seatsTotal' => 100,
+        'seatsAvailable' => 50,
+        'ticketsOnSale' => 'Yes',
+        'ticketCurrencyIso4217' => 'GBP',
+        'ticketPriceInAdvance' => 10.99,
+        'ticketPriceOnDoor' => 15.99,
+        'isTicketsOnSale' => true,
+        'sleeping' => 1,
+        'hasShowers' => true,
+        'isAlcoholAllowed' => true,
+        'hasSmokingArea' => true,
+        'networkConnectionMbps' => 1000,
+        'internetConnectionMbps' => 1000,
+        'description' => 'Test Description',
+    ])
+    ->toJson();
 
-$organizer = $publisher->createOrganisation('My Lan Party');
+header("Content-Type: application/json");
 
-$venue = $organizer->createVenue('My Hall');
-
-$event1 = $venue->createEvent('LAN 1');
-$event2 = $venue->createEvent('LAN 2');
-
-$publisher->outputJson();
+echo $jsonOutput;
