@@ -2,32 +2,84 @@
 
 namespace LanPartyPublisherPhp;
 
+use Composer\InstalledVersions;
+use Exception;
+
 class Publisher
 {
-    private ?Organisation $organizer;
+    private ?Organisation $organizer = null;
 
-    public function outputJson(?Organisation $organisation = null)
+    public static function make(): self
     {
-        if ($organisation == null) {
-            $organisation = $this->organizer;
-        }
-
-        $generator = 'lan-party-publisher-php ' . \Composer\InstalledVersions::getVersion('jamesread/lan-party-publisher-php');
-
-        $root = array();
-        $root['$schema'] = 'https://raw.githubusercontent.com/jamesread/lan-party-publishing-api/master/schema.json';
-        $root['generator'] = $generator;
-        $root['organisation'] = $organisation;
-
-        header("Content-Type: application/json");
-        echo json_encode($root, JSON_PRETTY_PRINT);
-        exit;
+        return new self();
     }
 
-    public function createOrganisation($name)
+    public function createOrganisation(string $name): self
     {
         $this->organizer = new Organisation($name);
 
+        return $this;
+    }
+
+    public function createVenue(string $name, array $opts = []): self
+    {
+        $this->organizer->createVenue($name, $opts);
+
+        return $this;
+    }
+
+    public function addVenues(array $venues): self
+    {
+        foreach ($venues as $venue) {
+            $this->organizer->addVenue($venue);
+        }
+
+        return $this;
+    }
+
+    public function createEvent(int|string $venue, string $name, array $opts = []): self
+    {
+        $venue = $this->organizer->getVenue($venue);
+
+        if (is_null($venue)) {
+            throw new Exception('Venue not found');
+        }
+
+        $venue->createEvent($name, $opts);
+
+        return $this;
+    }
+
+    public function addEvents(int|string $venue, array $events): self
+    {
+        $venue = $this->organizer->getVenue($venue);
+
+        if (is_null($venue)) {
+            throw new Exception('Venue not found');
+        }
+
+        foreach ($events as $event) {
+            $venue->addEvent($event);
+        }
+
+        return $this;
+    }
+
+    public function getOrganisation(): Organisation
+    {
         return $this->organizer;
+    }
+
+    public function toJson(): string
+    {
+        $generator = 'lan-party-publisher-php ' . InstalledVersions::getVersion('jamesread/lan-party-publisher-php');
+
+        $data = [
+            '$schema' => 'https://raw.githubusercontent.com/jamesread/lan-party-publishing-api/master/schema.json',
+            'generator' => $generator,
+            'organisation' => $this->organizer,
+        ];
+
+        return json_encode($data, JSON_PRETTY_PRINT);
     }
 }

@@ -2,38 +2,98 @@
 
 namespace LanPartyPublisherPhp;
 
+use DateTime;
+use Exception;
+use LanPartyPublisherPhp\Enums\SleepingEnum;
+
 class Event extends ModelBase
 {
-    public $start;
-    public $finish;
-    public $seatsTotal;
-    public $seatsAvailable;
-    public $ticketsOnSale;
-    public $ticketCurrencyIso4217;
-    public $ticketPriceInAdvance;
-    public $ticketPriceOnDoor;
-    public $isTicketsOnSale = false;
-    public $hasShowers;
-    public $sleeping = 0; // NOT_ARRANGED. NOT_OVERNIGHT. PRIVATE_ROOMS. SHARED_ROOM. SHARED_ROOM_AND_CAMPING.
-    public $isAlcoholAllowed = 0;
-    public $hasSmokingArea = 0;
-    public $networkConnectionMbps;
-    public $internetConnectionMbps;
-    public $description;
+    public string|null $start = null;
 
-    public $attendees;
+    public string|null $finish = null;
 
-    public function setStart(\DateTime $start)
-    {
-        $this->start = $start;
+    public int|null $seatsTotal = null;
+
+    public int|null $seatsAvailable = null;
+
+    public string $ticketsOnSale;
+
+    public string $ticketCurrencyIso4217;
+
+    public float|int|null $ticketPriceInAdvance = null;
+
+    public float|int|null $ticketPriceOnDoor = null;
+
+    public bool $isTicketsOnSale = false;
+
+    public int $sleeping;
+
+    public bool $hasShowers = false;
+
+    public bool $isAlcoholAllowed = false;
+
+    public bool $hasSmokingArea = false;
+
+    public int $networkConnectionMbps;
+
+    public int $internetConnectionMbps;
+
+    public string $description;
+
+    /** @var array<int, Attendee> */
+    public array $attendees = [];
+
+    public function __construct(
+        string|null $name = null,
+        string $apiType = '?',
+        int $apiVersion = 1,
+        string|int|null $siteUniqueId = null,
+    ) {
+        parent::__construct(
+            $name,
+            $apiType,
+            $apiVersion,
+            $siteUniqueId,
+        );
+
+        $this->sleeping = SleepingEnum::NOT_ARRANGED->value;
     }
 
-    public function setFinish(\DateTime $finish)
+    public static function make(?string $name = null, array $opts = []): self
     {
-        $this->finish = $finish;
+        $event = new self($name);
+
+        if (count($opts) > 0) {
+            foreach ($opts as $key => $value) {
+                if (property_exists($event, $key)) {
+
+                    if ($key === 'start' || $key === 'finish') {
+                        if (! $value instanceof DateTime) {
+                            throw new Exception('`start` and `finish` must be an instance of DateTime');
+                        }
+
+                        $event->{$key} = $value->format('Y-m-d H:i:s');
+                    } else {
+                        $event->{$key} = $value;
+                    }
+                }
+            }
+        }
+
+        return $event;
     }
 
-    public function addAttendee(Attendee $attendee)
+    public function setStart(DateTime $start): void
+    {
+        $this->start = $start->format('Y-m-d H:i:s');
+    }
+
+    public function setFinish(DateTime $finish): void
+    {
+        $this->finish = $finish->format('Y-m-d H:i:s');
+    }
+
+    public function addAttendee(Attendee $attendee): void
     {
         $this->attendees[] = $attendee;
     }
