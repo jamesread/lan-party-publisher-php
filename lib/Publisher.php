@@ -70,16 +70,19 @@ class Publisher
         return $this->organizer;
     }
 
-    public function toJson(): string
+    public function toArray(): array
     {
         $generator = 'lan-party-publisher-php ' . InstalledVersions::getVersion('jamesread/lan-party-publisher-php');
 
-        $data = [
+        return [
             '$schema' => 'https://raw.githubusercontent.com/jamesread/lan-party-publishing-api/master/schema.json',
             'generator' => $generator,
             'organisation' => $this->organizer,
         ];
+    }
 
-        return json_encode($data, JSON_PRETTY_PRINT);
+    public function toJson(): string
+    {
+        return json_encode($this->toArray(), JSON_PRETTY_PRINT);
     }
 }
