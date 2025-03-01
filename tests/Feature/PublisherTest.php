@@ -28,6 +28,35 @@ describe('JSON Output', function () {
         expect(json_decode($json, true))->toBe($expected);
     });
 
+    it('correctly outputs the `Organisation` with additional data', function () {
+        $publisher = Publisher::make()
+            ->createOrganisation('Test Organisation', [
+                'websiteUrl' => 'https://example.com',
+                'steamGroupUrl' => 'https://steamcommunity.com/groups/example',
+                'bannerImagePngUrl' => 'https://example.com/banner.png',
+                'description' => 'Test Description',
+            ]);
+
+        $json = $publisher->toJson();
+
+        $expected = [
+            ...createSchemaStructure(),
+            'organisation' => [
+                'name' => 'Test Organisation',
+                'apiType' => 'Organisation',
+                'apiVersion' => 1,
+                'siteUniqueId' => null,
+                'websiteUrl' => 'https://example.com',
+                'steamGroupUrl' => 'https://steamcommunity.com/groups/example',
+                'bannerImagePngUrl' => 'https://example.com/banner.png',
+                'description' => 'Test Description',
+                'venues' => [],
+            ],
+        ];
+
+        expect(json_decode($json, true))->toBe($expected);
+    });
+
     it('correctly outputs the `Organisation` and `Venue`', function () {
         $publisher = Publisher::make()
             ->createOrganisation('Test Organisation');
@@ -293,6 +322,25 @@ describe('Array Output', function () {
     it('correctly outputs the `Organisation`', function () {
         $publisher = Publisher::make()
             ->createOrganisation('Test Organisation');
+
+        $array = $publisher->toArray();
+
+        $expected = [
+            ...createSchemaStructure(),
+            'organisation' => $publisher->getOrganisation(),
+        ];
+
+        expect($array)->toBe($expected);
+    });
+
+    it('correctly outputs the `Organisation` with additional data', function () {
+        $publisher = Publisher::make()
+            ->createOrganisation('Test Organisation', [
+                'websiteUrl' => 'https://example.com',
+                'steamGroupUrl' => 'https://steamcommunity.com/groups/example',
+                'bannerImagePngUrl' => 'https://example.com/banner.png',
+                'description' => 'Test Description',
+            ]);
 
         $array = $publisher->toArray();
 
