@@ -6,7 +6,12 @@ use LanPartyPublisherPhp\Publisher;
 use LanPartyPublisherPhp\Venue;
 
 $publisher = Publisher::make()
-        ->createOrganisation('Test Organisation');
+        ->createOrganisation('Test Organisation', [
+            'websiteUrl' => 'https://example.com',
+            'steamGroupUrl' => 'https://steamcommunity.com/groups/example',
+            'bannerImagePngUrl' => 'https://example.com/banner.png',
+            'description' => 'Test Description',
+        ]);
 
 $venues = [
     [
