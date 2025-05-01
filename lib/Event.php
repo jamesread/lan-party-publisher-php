@@ -66,7 +66,6 @@ class Event extends ModelBase
         if (count($opts) > 0) {
             foreach ($opts as $key => $value) {
                 if (property_exists($event, $key)) {
-
                     if ($key === 'start' || $key === 'finish') {
                         if (! $value instanceof DateTime) {
                             throw new Exception('`start` and `finish` must be an instance of DateTime');

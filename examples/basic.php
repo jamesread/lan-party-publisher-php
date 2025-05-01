@@ -4,7 +4,12 @@ use DateTime;
 use LanPartyPublisherPhp\Publisher;
 
 $jsonOutput = Publisher::make()
-    ->createOrganisation('Test Organisation')
+    ->createOrganisation('Test Organisation', [
+        'websiteUrl' => 'https://example.com',
+        'steamGroupUrl' => 'https://steamcommunity.com/groups/example',
+        'bannerImagePngUrl' => 'https://example.com/banner.png',
+        'description' => 'Test Description',
+    ])
     ->createVenue('Test Venue', [
         'gpsLatitude' => null,
         'gpsLongditude' => null,

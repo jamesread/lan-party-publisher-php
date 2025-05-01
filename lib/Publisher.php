@@ -14,9 +14,17 @@ class Publisher
         return new self();
     }
 
-    public function createOrganisation(string $name): self
+    public function createOrganisation(string $name, array $opts = []): self
     {
         $this->organizer = new Organisation($name);
+
+        if (count($opts) > 0) {
+            foreach ($opts as $key => $value) {
+                if (property_exists($this->organizer, $key)) {
+                    $this->organizer->{$key} = $value;
+                }
+            }
+        }
 
         return $this;
     }
