@@ -1,9 +1,9 @@
-name: Tests
+name: Release
 
 on: [push, pull_request]
 
 jobs:
-  test:
+  release:
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
@@ -44,3 +44,29 @@ jobs:
 
       - name: Execute tests
         run: vendor/bin/pest
+
+      - name: Run composer install
+        run: composer install -n --prefer-dist
+
+      - name: Run phpstan
+        run: ./vendor/bin/phpstan analyse
+
+      - name: Fix PHP code style issues
+        uses: aglipanci/laravel-pint-action@2.5
+        with:
+          preset: psr12
+          pintVersion: 1.21.0
+          testMode: true
+          useComposer: true
+
+      - name: release
+        uses: cycjimmy/semantic-release-action@v4
+        with:
+          extra_plugins: |
+            @semantic-release/commit-analyzer
+            @semantic-release/git
+            @semantic-release/github
+
+        env:
+          GH_TOKEN: ${{ secrets.CONTAINER_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.CONTAINER_TOKEN }}
