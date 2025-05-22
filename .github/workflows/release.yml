@@ -70,10 +70,6 @@ jobs:
      steps:
       - name: release
         uses: cycjimmy/semantic-release-action@v4.2.0
-        with:
-          extra_plugins: |
-            @semantic-release/commit-analyzer
-            @semantic-release/git
 
         env:
           GH_TOKEN: ${{ secrets.CONTAINER_TOKEN }}
