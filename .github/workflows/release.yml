@@ -70,6 +70,8 @@ jobs:
      steps:
       - name: release
         uses: cycjimmy/semantic-release-action@v4.2.0
+        with:
+          semantic_version: 24.2.3 # https://github.com/cycjimmy/semantic-release-action/issues/243
 
         env:
           GH_TOKEN: ${{ secrets.CONTAINER_TOKEN }}
