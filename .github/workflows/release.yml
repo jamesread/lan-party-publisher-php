@@ -11,7 +11,7 @@ jobs:
         php: [8.4, 8.3, 8.2, 8.1]
         dependency-version: [prefer-lowest, prefer-stable]
 
-    name: P${{ matrix.php }} - ${{ matrix.dependency-version }}
+    name: PHP${{ matrix.php }} - ${{ matrix.dependency-version }}
 
     steps:
       - name: Checkout code
@@ -61,7 +61,7 @@ jobs:
 
   release:
      runs-on: ubuntu-latest
-     depends-on: build
+     needs: [build]
      steps:
       - name: release
         uses: cycjimmy/semantic-release-action@v4
