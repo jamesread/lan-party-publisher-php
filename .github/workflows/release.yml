@@ -69,12 +69,11 @@ jobs:
      needs: [build]
      steps:
       - name: release
-        uses: cycjimmy/semantic-release-action@v4
+        uses: cycjimmy/semantic-release-action@v4.2.0
         with:
           extra_plugins: |
             @semantic-release/commit-analyzer
             @semantic-release/git
-            @semantic-release/github
 
         env:
           GH_TOKEN: ${{ secrets.CONTAINER_TOKEN }}
