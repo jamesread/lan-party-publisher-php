@@ -61,6 +61,7 @@ jobs:
 
   release:
      runs-on: ubuntu-latest
+     depends-on: build
      steps:
       - name: release
         uses: cycjimmy/semantic-release-action@v4
