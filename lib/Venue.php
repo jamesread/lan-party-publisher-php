@@ -2,14 +2,13 @@
 
 namespace LanPartyPublisherPhp;
 
-use DateTime;
-use Exception;
-
 class Venue extends ModelBase
 {
     public float|null $gpsLatitude = null;
 
-    public float|null $gpsLongditude = null;
+    public float|null $gpsLongitude = null;
+
+    public ?string $countryCode = null;
 
     /** @var array<int, Event> */
     public array $events = [];
@@ -19,11 +18,7 @@ class Venue extends ModelBase
         $venue = new Venue($name);
 
         if (count($opts) > 0) {
-            foreach ($opts as $key => $value) {
-                if (property_exists($venue, $key)) {
-                    $venue->{$key} = $value;
-                }
-            }
+            self::applyOptions($venue, $opts);
         }
 
         return $venue;
@@ -34,20 +29,7 @@ class Venue extends ModelBase
         $event = new Event($name);
 
         if (count($opts) > 0) {
-            foreach ($opts as $key => $value) {
-                if (property_exists($event, $key)) {
-
-                    if ($key === 'start' || $key === 'finish') {
-                        if (! $value instanceof DateTime) {
-                            throw new Exception('`start` and `finish` must be an instance of DateTime');
-                        }
-
-                        $event->{$key} = $value->format('Y-m-d H:i:s');
-                    } else {
-                        $event->{$key} = $value;
-                    }
-                }
-            }
+            self::applyOptions($event, $opts);
         }
 
         $this->addEvent($event);
@@ -55,7 +37,7 @@ class Venue extends ModelBase
         return $event;
     }
 
-    public function addEvent(Event $event)
+    public function addEvent(Event $event): void
     {
         $this->events[] = $event;
     }

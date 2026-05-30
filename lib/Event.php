@@ -3,57 +3,60 @@
 namespace LanPartyPublisherPhp;
 
 use DateTime;
-use Exception;
 use LanPartyPublisherPhp\Enums\SleepingEnum;
 
 class Event extends ModelBase
 {
-    public string|null $start = null;
+    public ?string $url = null;
 
-    public string|null $finish = null;
+    public ?string $eventStatus = null;
 
-    public int|null $seatsTotal = null;
+    public int $eventAttendanceMode = 0;
 
-    public int|null $seatsAvailable = null;
+    public ?string $startDate = null;
 
-    public string $ticketsOnSale;
+    public ?string $endDate = null;
 
-    public string $ticketCurrencyIso4217;
+    public ?string $previousStartDate = null;
 
-    public float|int|null $ticketPriceInAdvance = null;
+    public ?int $maximumAttendeeCapacity = null;
 
-    public float|int|null $ticketPriceOnDoor = null;
+    public ?int $remainingAttendeeCapacity = null;
 
-    public bool $isTicketsOnSale = false;
+    /** @var array<int, Ticket> */
+    public array $tickets = [];
 
-    public int $sleeping;
+    public int $sleeping = 0;
 
     public bool $hasShowers = false;
 
-    public bool $isAlcoholAllowed = false;
+    public int $alcoholPolicy = 0;
 
-    public bool $hasSmokingArea = false;
+    public int $smokingPolicy = 0;
 
-    public int $networkConnectionMbps;
+    public int $agePolicy = 0;
 
-    public int $internetConnectionMbps;
+    public int $foodPolicy = 0;
 
-    public string $description;
+    public int $networkConnectionMbps = 0;
 
-    /** @var array<int, Attendee> */
-    public array $attendees = [];
+    public int $internetConnectionMbps = 0;
+
+    public int $wifiConnectionMbps = 0;
+
+    public ?string $description = null;
 
     public function __construct(
         string|null $name = null,
         string $apiType = '?',
-        int $apiVersion = 1,
-        string|int|null $siteUniqueId = null,
+        int $apiVersion = 2,
+        string|int $publisherUniqueId = '',
     ) {
         parent::__construct(
             $name,
             $apiType,
             $apiVersion,
-            $siteUniqueId,
+            $publisherUniqueId,
         );
 
         $this->sleeping = SleepingEnum::NOT_ARRANGED->value;
@@ -64,36 +67,24 @@ class Event extends ModelBase
         $event = new self($name);
 
         if (count($opts) > 0) {
-            foreach ($opts as $key => $value) {
-                if (property_exists($event, $key)) {
-                    if ($key === 'start' || $key === 'finish') {
-                        if (! $value instanceof DateTime) {
-                            throw new Exception('`start` and `finish` must be an instance of DateTime');
-                        }
-
-                        $event->{$key} = $value->format('Y-m-d H:i:s');
-                    } else {
-                        $event->{$key} = $value;
-                    }
-                }
-            }
+            self::applyOptions($event, $opts);
         }
 
         return $event;
     }
 
-    public function setStart(DateTime $start): void
+    public function setStartDate(DateTime $startDate): void
     {
-        $this->start = $start->format('Y-m-d H:i:s');
+        $this->startDate = self::formatDateTime($startDate);
     }
 
-    public function setFinish(DateTime $finish): void
+    public function setEndDate(DateTime $endDate): void
     {
-        $this->finish = $finish->format('Y-m-d H:i:s');
+        $this->endDate = self::formatDateTime($endDate);
     }
 
-    public function addAttendee(Attendee $attendee): void
+    public function addTicket(Ticket $ticket): void
     {
-        $this->attendees[] = $attendee;
+        $this->tickets[] = $ticket;
     }
 }

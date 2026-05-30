@@ -1,7 +1,5 @@
 <?php
 
-use Composer\InstalledVersions;
-
 /*
 |--------------------------------------------------------------------------
 | Test Case
@@ -41,10 +39,5 @@ expect()->extend('toBeOne', function () {
 |
 */
 
-function createSchemaStructure(): array
-{
-    return [
-        '$schema' => 'https://raw.githubusercontent.com/jamesread/lan-party-publishing-api/master/schema.json',
-        'generator' => 'lan-party-publisher-php ' . InstalledVersions::getVersion('jamesread/lan-party-publisher-php'),
-    ];
-}
+require_once __DIR__ . '/../examples/helpers.php';
+require_once __DIR__ . '/helpers/expectations.php';

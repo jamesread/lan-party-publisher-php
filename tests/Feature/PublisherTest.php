@@ -8,24 +8,10 @@ describe('JSON Output', function () {
         $publisher = Publisher::make()
             ->createOrganisation('Test Organisation');
 
-        $json = $publisher->toJson();
-
-        $expected = [
+        expectJsonDocument(json_decode($publisher->toJson(), true), [
             ...createSchemaStructure(),
-            'organisation' => [
-                'name' => 'Test Organisation',
-                'apiType' => 'Organisation',
-                'apiVersion' => 1,
-                'siteUniqueId' => null,
-                'websiteUrl' => null,
-                'steamGroupUrl' => null,
-                'bannerImagePngUrl' => null,
-                'description' => null,
-                'venues' => [],
-            ],
-        ];
-
-        expect(json_decode($json, true))->toBe($expected);
+            'organisation' => expectedOrganisation(),
+        ]);
     });
 
     it('correctly outputs the `Organisation` with additional data', function () {
@@ -33,90 +19,50 @@ describe('JSON Output', function () {
             ->createOrganisation('Test Organisation', [
                 'websiteUrl' => 'https://example.com',
                 'steamGroupUrl' => 'https://steamcommunity.com/groups/example',
-                'bannerImagePngUrl' => 'https://example.com/banner.png',
+                'image' => 'https://example.com/banner.png',
                 'description' => 'Test Description',
             ]);
 
-        $json = $publisher->toJson();
-
-        $expected = [
+        expectJsonDocument(json_decode($publisher->toJson(), true), [
             ...createSchemaStructure(),
-            'organisation' => [
-                'name' => 'Test Organisation',
-                'apiType' => 'Organisation',
-                'apiVersion' => 1,
-                'siteUniqueId' => null,
+            'organisation' => expectedOrganisation([
                 'websiteUrl' => 'https://example.com',
                 'steamGroupUrl' => 'https://steamcommunity.com/groups/example',
-                'bannerImagePngUrl' => 'https://example.com/banner.png',
+                'image' => 'https://example.com/banner.png',
                 'description' => 'Test Description',
-                'venues' => [],
-            ],
-        ];
-
-        expect(json_decode($json, true))->toBe($expected);
+            ]),
+        ]);
     });
 
     it('correctly outputs the `Organisation` and `Venue`', function () {
         $publisher = Publisher::make()
             ->createOrganisation('Test Organisation');
 
-        $organisation = $publisher->getOrganisation();
+        $venue = $publisher->getOrganisation()->createVenue('Test Venue');
 
-        $venue = $organisation->createVenue('Test Venue');
-
-        $json = $publisher->toJson();
-
-        $expected = [
+        expectJsonDocument(json_decode($publisher->toJson(), true), [
             ...createSchemaStructure(),
-            'organisation' => [
-                'name' => 'Test Organisation',
-                'apiType' => 'Organisation',
-                'apiVersion' => 1,
-                'siteUniqueId' => null,
-                'websiteUrl' => null,
-                'steamGroupUrl' => null,
-                'bannerImagePngUrl' => null,
-                'description' => null,
-                'venues' => [
-                    (array) $venue,
-                ],
-            ],
-        ];
-
-        expect(json_decode($json, true))->toBe($expected);
+            'organisation' => expectedOrganisation([
+                'venues' => [jsonSnapshot($venue)],
+            ]),
+        ]);
     });
 
     it('correctly outputs with the `Organisation`, `Venue` and `Event`', function () {
         $publisher = Publisher::make()
             ->createOrganisation('Test Organisation');
 
-        $organisation = $publisher->getOrganisation();
-
-        $venue = $organisation->createVenue('Test Venue');
-
+        $venue = $publisher->getOrganisation()->createVenue('Test Venue');
         $event = $venue->createEvent('Test Event');
 
-        $json = $publisher->toJson();
-
-        $expected = [
+        expectJsonDocument(json_decode($publisher->toJson(), true), [
             ...createSchemaStructure(),
-            'organisation' => [
-                'name' => 'Test Organisation',
-                'apiType' => 'Organisation',
-                'apiVersion' => 1,
-                'siteUniqueId' => null,
-                'websiteUrl' => null,
-                'steamGroupUrl' => null,
-                'bannerImagePngUrl' => null,
-                'description' => null,
+            'organisation' => expectedOrganisation([
                 'venues' => [
-                [...(array)$venue, 'events' => [(array) $event]],
+                    [...jsonSnapshot($venue), 'events' => [jsonSnapshot($event)]],
                 ],
-            ],
-        ];
-
-        expect(json_decode($json, true))->toBe($expected);
+            ]),
+        ]);
     });
 
     it('correctly outputs `multiple venues`', function () {
@@ -124,197 +70,86 @@ describe('JSON Output', function () {
             ->createOrganisation('Test Organisation');
 
         $organisation = $publisher->getOrganisation();
-
         $venues = [];
 
         for ($i = 0; $i < 3; $i++) {
             $venue = new Venue('Test Venue ' . $i);
-
             $venue->createEvent('Test Event ' . $i);
-
             $venues[] = $venue;
-
             $organisation->addVenue($venue);
         }
 
-        $json = $publisher->toJson();
-
-        $expected = [
+        expectJsonDocument(json_decode($publisher->toJson(), true), [
             ...createSchemaStructure(),
-            'organisation' => [
-                'name' => 'Test Organisation',
-                'apiType' => 'Organisation',
-                'apiVersion' => 1,
-                'siteUniqueId' => null,
-                'websiteUrl' => null,
-                'steamGroupUrl' => null,
-                'bannerImagePngUrl' => null,
-                'description' => null,
-                'venues' => array_map(fn ($venue) => [...(array) $venue, 'events' => array_map(fn ($event) => (array) $event, $venue->events)], $venues),
-            ],
-        ];
-
-        expect(json_decode($json, true))->toBe($expected);
+            'organisation' => expectedOrganisation([
+                'venues' => array_map(
+                    fn ($venue) => [...jsonSnapshot($venue), 'events' => array_map(fn ($event) => jsonSnapshot($event), $venue->events)],
+                    $venues
+                ),
+            ]),
+        ]);
     });
 
     it('correctly outputs `multiple events`', function () {
         $publisher = Publisher::make()
             ->createOrganisation('Test Organisation');
 
-        $organisation = $publisher->getOrganisation();
-
-        $venue = $organisation->createVenue('Test Venue');
-
+        $venue = $publisher->getOrganisation()->createVenue('Test Venue');
         $events = [];
 
         for ($i = 0; $i < 3; $i++) {
-            $event = $venue->createEvent('Test Event ' . $i);
-
-            $events[] = $event;
+            $events[] = $venue->createEvent('Test Event ' . $i);
         }
 
-        $json = $publisher->toJson();
-
-        $expected = [
+        expectJsonDocument(json_decode($publisher->toJson(), true), [
             ...createSchemaStructure(),
-            'organisation' => [
-                'name' => 'Test Organisation',
-                'apiType' => 'Organisation',
-                'apiVersion' => 1,
-                'siteUniqueId' => null,
-                'websiteUrl' => null,
-                'steamGroupUrl' => null,
-                'bannerImagePngUrl' => null,
-                'description' => null,
+            'organisation' => expectedOrganisation([
                 'venues' => [
-                    [...(array) $venue, 'events' => array_map(fn ($event) => (array) $event, $events)],
+                    [...jsonSnapshot($venue), 'events' => array_map(fn ($event) => jsonSnapshot($event), $events)],
                 ],
-            ],
-        ];
-
-        expect(json_decode($json, true))->toBe($expected);
+            ]),
+        ]);
     });
 
     it('correctly outputs a `venue` with custom properties', function () {
         $publisher = Publisher::make()
-            ->createOrganisation('Test Organisation');
+            ->createOrganisation('Test Organisation')
+            ->createVenue('Test Venue', [
+                'gpsLatitude' => 51.5072,
+                'gpsLongitude' => 0.1276,
+                'countryCode' => 'GB',
+            ]);
 
-        $organisation = $publisher->getOrganisation();
-
-        $organisation->createVenue('Test Venue', [
-            'gpsLatitude' => 51.5072,
-            'gpsLongditude' => 0.1276,
-        ]);
-
-        $json = $publisher->toJson();
-
-        $expected = [
+        expectJsonDocument(json_decode($publisher->toJson(), true), [
             ...createSchemaStructure(),
-            'organisation' => [
-                'name' => 'Test Organisation',
-                'apiType' => 'Organisation',
-                'apiVersion' => 1,
-                'siteUniqueId' => null,
-                'websiteUrl' => null,
-                'steamGroupUrl' => null,
-                'bannerImagePngUrl' => null,
-                'description' => null,
+            'organisation' => expectedOrganisation([
                 'venues' => [
-                    [
-                        'name' => 'Test Venue',
-                        'apiType' => 'Venue',
-                        'apiVersion' => 1,
-                        'siteUniqueId' => null,
+                    expectedVenue([
                         'gpsLatitude' => 51.5072,
-                        'gpsLongditude' => 0.1276,
-                        'events' => [],
-                    ],
+                        'gpsLongitude' => 0.1276,
+                        'countryCode' => 'GB',
+                    ]),
                 ],
-            ],
-        ];
-
-        expect(json_decode($json, true))->toBe($expected);
+            ]),
+        ]);
     });
 
     it('correctly outputs a `event` with custom properties', function () {
         $publisher = Publisher::make()
-            ->createOrganisation('Test Organisation');
+            ->createOrganisation('Test Organisation')
+            ->createVenue('Test Venue')
+            ->createEvent('Test Venue', 'Test Event', sampleEventOptions());
 
-        $organisation = $publisher->getOrganisation();
-
-        $venue = $organisation->createVenue('Test Venue');
-
-        $venue->createEvent('Test Event', [
-            'start' => DateTime::createFromFormat('Y-m-d H:i:s', '2021-01-01 00:00:00'),
-            'finish' => DateTime::createFromFormat('Y-m-d H:i:s', '2021-01-02 00:00:00'),
-            'seatsTotal' => 100,
-            'seatsAvailable' => 50,
-            'ticketsOnSale' => 'Yes',
-            'ticketCurrencyIso4217' => 'GBP',
-            'ticketPriceInAdvance' => 10.99,
-            'ticketPriceOnDoor' => 15.99,
-            'isTicketsOnSale' => true,
-            'sleeping' => 1,
-            'hasShowers' => true,
-            'isAlcoholAllowed' => true,
-            'hasSmokingArea' => true,
-            'networkConnectionMbps' => 1000,
-            'internetConnectionMbps' => 1000,
-            'description' => 'Test Description',
-        ]);
-
-        $json = $publisher->toJson();
-
-        $expected = [
+        expectJsonDocument(json_decode($publisher->toJson(), true), [
             ...createSchemaStructure(),
-            'organisation' => [
-                'name' => 'Test Organisation',
-                'apiType' => 'Organisation',
-                'apiVersion' => 1,
-                'siteUniqueId' => null,
-                'websiteUrl' => null,
-                'steamGroupUrl' => null,
-                'bannerImagePngUrl' => null,
-                'description' => null,
+            'organisation' => expectedOrganisation([
                 'venues' => [
-                    [
-                        'name' => 'Test Venue',
-                        'apiType' => 'Venue',
-                        'apiVersion' => 1,
-                        'siteUniqueId' => null,
-                        'gpsLatitude' => null,
-                        'gpsLongditude' => null,
-                        'events' => [
-                            [
-                                'name' => 'Test Event',
-                                'apiType' => 'Event',
-                                'apiVersion' => 1,
-                                'siteUniqueId' => null,
-                                'start' => '2021-01-01 00:00:00',
-                                'finish' => '2021-01-02 00:00:00',
-                                'seatsTotal' => 100,
-                                'seatsAvailable' => 50,
-                                'ticketsOnSale' => 'Yes',
-                                'ticketCurrencyIso4217' => 'GBP',
-                                'ticketPriceInAdvance' => 10.99,
-                                'ticketPriceOnDoor' => 15.99,
-                                'isTicketsOnSale' => true,
-                                'sleeping' => 1,
-                                'hasShowers' => true,
-                                'isAlcoholAllowed' => true,
-                                'hasSmokingArea' => true,
-                                'networkConnectionMbps' => 1000,
-                                'internetConnectionMbps' => 1000,
-                                'description' => 'Test Description',
-                                'attendees' => [],
-                            ],
-                        ],
-                    ],
+                    expectedVenue([
+                        'events' => [expectedSampleEvent()],
+                    ]),
                 ],
-            ],
-        ];
-
-        expect(json_decode($json, true))->toBe($expected);
+            ]),
+        ]);
     });
 });
 
@@ -323,14 +158,10 @@ describe('Array Output', function () {
         $publisher = Publisher::make()
             ->createOrganisation('Test Organisation');
 
-        $array = $publisher->toArray();
-
-        $expected = [
+        expect($publisher->toArray())->toBe([
             ...createSchemaStructure(),
             'organisation' => $publisher->getOrganisation(),
-        ];
-
-        expect($array)->toBe($expected);
+        ]);
     });
 
     it('correctly outputs the `Organisation` with additional data', function () {
@@ -338,56 +169,38 @@ describe('Array Output', function () {
             ->createOrganisation('Test Organisation', [
                 'websiteUrl' => 'https://example.com',
                 'steamGroupUrl' => 'https://steamcommunity.com/groups/example',
-                'bannerImagePngUrl' => 'https://example.com/banner.png',
+                'image' => 'https://example.com/banner.png',
                 'description' => 'Test Description',
             ]);
 
-        $array = $publisher->toArray();
-
-        $expected = [
+        expect($publisher->toArray())->toBe([
             ...createSchemaStructure(),
             'organisation' => $publisher->getOrganisation(),
-        ];
-
-        expect($array)->toBe($expected);
+        ]);
     });
 
     it('correctly outputs the `Organisation` and `Venue`', function () {
         $publisher = Publisher::make()
             ->createOrganisation('Test Organisation');
 
-        $organisation = $publisher->getOrganisation();
+        $publisher->getOrganisation()->createVenue('Test Venue');
 
-        $venue = $organisation->createVenue('Test Venue');
-
-        $array = $publisher->toArray();
-
-        $expected = [
+        expect($publisher->toArray())->toBe([
             ...createSchemaStructure(),
             'organisation' => $publisher->getOrganisation(),
-        ];
-
-        expect($array)->toBe($expected);
+        ]);
     });
 
     it('correctly outputs with the `Organisation`, `Venue` and `Event`', function () {
         $publisher = Publisher::make()
             ->createOrganisation('Test Organisation');
 
-        $organisation = $publisher->getOrganisation();
+        $publisher->getOrganisation()->createVenue('Test Venue')->createEvent('Test Event');
 
-        $venue = $organisation->createVenue('Test Venue');
-
-        $event = $venue->createEvent('Test Event');
-
-        $array = $publisher->toArray();
-
-        $expected = [
+        expect($publisher->toArray())->toBe([
             ...createSchemaStructure(),
             'organisation' => $publisher->getOrganisation(),
-        ];
-
-        expect($array)->toBe($expected);
+        ]);
     });
 
     it('correctly outputs `multiple venues`', function () {
@@ -396,109 +209,57 @@ describe('Array Output', function () {
 
         $organisation = $publisher->getOrganisation();
 
-        $venues = [];
-
         for ($i = 0; $i < 3; $i++) {
             $venue = new Venue('Test Venue ' . $i);
-
             $venue->createEvent('Test Event ' . $i);
-
-            $venues[] = $venue;
-
             $organisation->addVenue($venue);
         }
 
-        $array = $publisher->toArray();
-
-        $expected = [
+        expect($publisher->toArray())->toBe([
             ...createSchemaStructure(),
             'organisation' => $publisher->getOrganisation(),
-        ];
-
-        expect($array)->toBe($expected);
+        ]);
     });
 
     it('correctly outputs `multiple events`', function () {
         $publisher = Publisher::make()
             ->createOrganisation('Test Organisation');
 
-        $organisation = $publisher->getOrganisation();
-
-        $venue = $organisation->createVenue('Test Venue');
-
-        $events = [];
+        $venue = $publisher->getOrganisation()->createVenue('Test Venue');
 
         for ($i = 0; $i < 3; $i++) {
-            $event = $venue->createEvent('Test Event ' . $i);
-
-            $events[] = $event;
+            $venue->createEvent('Test Event ' . $i);
         }
 
-        $array = $publisher->toArray();
-
-        $expected = [
+        expect($publisher->toArray())->toBe([
             ...createSchemaStructure(),
             'organisation' => $publisher->getOrganisation(),
-        ];
-
-        expect($array)->toBe($expected);
+        ]);
     });
 
     it('correctly outputs a `venue` with custom properties', function () {
         $publisher = Publisher::make()
-            ->createOrganisation('Test Organisation');
+            ->createOrganisation('Test Organisation')
+            ->createVenue('Test Venue', [
+                'gpsLatitude' => 51.5072,
+                'gpsLongitude' => 0.1276,
+            ]);
 
-        $organisation = $publisher->getOrganisation();
-
-        $organisation->createVenue('Test Venue', [
-            'gpsLatitude' => 51.5072,
-            'gpsLongditude' => 0.1276,
-        ]);
-
-        $array = $publisher->toArray();
-
-        $expected = [
+        expect($publisher->toArray())->toBe([
             ...createSchemaStructure(),
             'organisation' => $publisher->getOrganisation(),
-        ];
-
-        expect($array)->toBe($expected);
+        ]);
     });
 
     it('correctly outputs a `event` with custom properties', function () {
         $publisher = Publisher::make()
-            ->createOrganisation('Test Organisation');
+            ->createOrganisation('Test Organisation')
+            ->createVenue('Test Venue')
+            ->createEvent('Test Venue', 'Test Event', sampleEventOptions());
 
-        $organisation = $publisher->getOrganisation();
-
-        $venue = $organisation->createVenue('Test Venue');
-
-        $venue->createEvent('Test Event', [
-            'start' => DateTime::createFromFormat('Y-m-d H:i:s', '2021-01-01 00:00:00'),
-            'finish' => DateTime::createFromFormat('Y-m-d H:i:s', '2021-01-02 00:00:00'),
-            'seatsTotal' => 100,
-            'seatsAvailable' => 50,
-            'ticketsOnSale' => 'Yes',
-            'ticketCurrencyIso4217' => 'GBP',
-            'ticketPriceInAdvance' => 10.99,
-            'ticketPriceOnDoor' => 15.99,
-            'isTicketsOnSale' => true,
-            'sleeping' => 1,
-            'hasShowers' => true,
-            'isAlcoholAllowed' => true,
-            'hasSmokingArea' => true,
-            'networkConnectionMbps' => 1000,
-            'internetConnectionMbps' => 1000,
-            'description' => 'Test Description',
-        ]);
-
-        $array = $publisher->toArray();
-
-        $expected = [
+        expect($publisher->toArray())->toBe([
             ...createSchemaStructure(),
             'organisation' => $publisher->getOrganisation(),
-        ];
-
-        expect($array)->toBe($expected);
+        ]);
     });
 });

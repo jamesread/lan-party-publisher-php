@@ -1,13 +1,11 @@
 ---
 name: Feature request
-about: Suggest an idea for this project
-title: '[Feature]: '
+about: Suggest an idea for something new
+title: 'Give your feature request a title'
 labels:
-  - "feature"
+  - "type: feature-request"
   - "waiting-on-developer"
 assignees: ''
-type: 'feature'
-
 ---
 
 **Is your feature request related to a problem? Please describe.**

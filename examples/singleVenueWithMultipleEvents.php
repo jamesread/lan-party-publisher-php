@@ -1,6 +1,7 @@
 <?php
 
-use DateTime;
+require __DIR__ . '/helpers.php';
+
 use LanPartyPublisherPhp\Event;
 use LanPartyPublisherPhp\Publisher;
 
@@ -8,65 +9,20 @@ $publisher = Publisher::make()
     ->createOrganisation('Test Organisation', [
         'websiteUrl' => 'https://example.com',
         'steamGroupUrl' => 'https://steamcommunity.com/groups/example',
-        'bannerImagePngUrl' => 'https://example.com/banner.png',
+        'image' => 'https://example.com/banner.png',
         'description' => 'Test Description',
     ])
-    ->createVenue('Test Venue', [
-        'gpsLatitude' => null,
-        'gpsLongditude' => null,
-    ]);
+    ->createVenue('Test Venue');
 
 $events = [
-    [
-        'name' => 'Test Event 1',
-        'opts' => [
-            'start' => DateTime::createFromFormat('Y-m-d H:i:s', '2021-01-01 00:00:00'),
-            'finish' => DateTime::createFromFormat('Y-m-d H:i:s', '2021-01-02 00:00:00'),
-            'seatsTotal' => 100,
-            'seatsAvailable' => 50,
-            'ticketsOnSale' => 'Yes',
-            'ticketCurrencyIso4217' => 'GBP',
-            'ticketPriceInAdvance' => 10.99,
-            'ticketPriceOnDoor' => 15.99,
-            'isTicketsOnSale' => true,
-            'sleeping' => 1,
-            'hasShowers' => true,
-            'isAlcoholAllowed' => true,
-            'hasSmokingArea' => true,
-            'networkConnectionMbps' => 1000,
-            'internetConnectionMbps' => 1000,
-            'description' => 'Test Description',
-        ],
-    ],
-    [
-        'name' => 'Test Event 2',
-        'opts' => [
-            'start' => DateTime::createFromFormat('Y-m-d H:i:s', '2021-01-01 00:00:00'),
-            'finish' => DateTime::createFromFormat('Y-m-d H:i:s', '2021-01-02 00:00:00'),
-            'seatsTotal' => 100,
-            'seatsAvailable' => 50,
-            'ticketsOnSale' => 'Yes',
-            'ticketCurrencyIso4217' => 'GBP',
-            'ticketPriceInAdvance' => 10.99,
-            'ticketPriceOnDoor' => 15.99,
-            'isTicketsOnSale' => true,
-            'sleeping' => 1,
-            'hasShowers' => true,
-            'isAlcoholAllowed' => true,
-            'hasSmokingArea' => true,
-            'networkConnectionMbps' => 1000,
-            'internetConnectionMbps' => 1000,
-            'description' => 'Test Description',
-        ],
-    ]
+    Event::make('Test Event 1', sampleEventOptions()),
+    Event::make('Test Event 2', array_merge(sampleEventOptions(), [
+        'publisherUniqueId' => 'test-event-2',
+    ])),
 ];
-
-$events = array_map(function (array $value) {
-    return Event::make($value['name'], $value['opts']);
-}, $events);
 
 $publisher->addEvents('Test Venue', $events);
 
-header("Content-Type: application/json");
+header('Content-Type: application/json');
 
 echo $publisher->toJson();

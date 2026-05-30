@@ -7,6 +7,8 @@ use Exception;
 
 class Publisher
 {
+    public const SCHEMA_URL = 'https://raw.githubusercontent.com/jamesread/lan-party-publishing-standard/main/lan-party-publishing-standard-v2.schema';
+
     private ?Organisation $organizer = null;
 
     public static function make(): self
@@ -19,11 +21,7 @@ class Publisher
         $this->organizer = new Organisation($name);
 
         if (count($opts) > 0) {
-            foreach ($opts as $key => $value) {
-                if (property_exists($this->organizer, $key)) {
-                    $this->organizer->{$key} = $value;
-                }
-            }
+            ModelBase::applyOptions($this->organizer, $opts);
         }
 
         return $this;
@@ -83,7 +81,7 @@ class Publisher
         $generator = 'lan-party-publisher-php ' . InstalledVersions::getVersion('jamesread/lan-party-publisher-php');
 
         return [
-            '$schema' => 'https://raw.githubusercontent.com/jamesread/lan-party-publishing-api/master/schema.json',
+            '$schema' => self::SCHEMA_URL,
             'generator' => $generator,
             'organisation' => $this->organizer,
         ];
@@ -91,6 +89,27 @@ class Publisher
 
     public function toJson(): string
     {
-        return json_encode($this->toArray(), JSON_PRETTY_PRINT);
+        $data = json_decode(json_encode($this->toArray()), true);
+
+        return json_encode(self::omitNulls($data), JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
+    }
+
+    public static function omitNulls(array $data): array
+    {
+        $result = [];
+
+        foreach ($data as $key => $value) {
+            if ($value === null) {
+                continue;
+            }
+
+            if (is_array($value)) {
+                $result[$key] = self::omitNulls($value);
+            } else {
+                $result[$key] = $value;
+            }
+        }
+
+        return $result;
     }
 }

@@ -1,2 +1,10 @@
+.PHONY: phpstan lint tests
+
 phpstan:
-	php vendor/bin/phpstan analyse --memory-limit=512M
+	composer analyse
+
+lint:
+	composer lint:test
+
+tests:
+	composer test

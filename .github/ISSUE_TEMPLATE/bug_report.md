@@ -1,13 +1,11 @@
 ---
 name: Bug report
 about: Create a report to help us improve
-title: "[Bug]: "
+title: ""
 labels:
-  - "Bug"
-  - "Needs Triage"
+  - "type: bug"
   - "waiting-on-developer"
 assignees: ''
-type: 'bug'
 
 ---
 

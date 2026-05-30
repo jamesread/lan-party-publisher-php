@@ -1,73 +1,35 @@
-# CONTRIBUTING
+# Contributions
 
-We welcome all contributions, whether they involve code, documentation, or other improvements. Your time and effort in enhancing this project are greatly appreciated, whether this is your first open-source contribution or you are an experienced maintainer.
+Contributions are very welcome - code, docs, whatever they might be! If this is
+your first contribution to an Open Source project or you're a core maintainer
+of multiple projects, your time and interest in contributing is most welcome.
 
-If you are unsure where to start, consider opening an issue to discuss potential contributions.
+If you're not sure where to get started, raise an issue in the project.
 
-Discussions should focus on technical merits and project-related concerns. We strive to maintain a respectful and inclusive environment, following the [Linux Kernel code of conduct](https://www.kernel.org/doc/html/latest/process/code-of-conduct.html).
+Ideas may be discussed, purely on their merits and issues. Our Code of Conduct
+(CoC) is straightforward - it's important that contributors feel comfortable in
+discussion throughout the whole process. This project has a
+[Code of Conduct](CODE_OF_CONDUCT.md).
 
-## Contribution Guidelines
+## More than 3 lines - talk to someone first
 
-### Changes Exceeding Three Lines
+If you're planning on making a change that's more than a 3 lines, please talk to someone first. This is so that you don't waste your time on something that might not be accepted. It's also a good way to get some feedback on your idea and make sure you're on the right track.
 
-If your proposed change involves more than three lines of code, please discuss it with the maintainers before proceeding. This helps ensure alignment with the project's direction and prevents unnecessary work.
+## A PR should be one logical change
 
-### Contribution Process
-1. Fork the repository.
-1. Create a new branch.
-1. Develop, test, commit, and push your changes.
-1. Submit a pull request (PR) with a detailed description. Please adhere to the [pull request template](.github/PULL_REQUEST_TEMPLATE.md).
+Please try to keep your pull requests small and focused. It's almost impossible to review PRs that change lots of files for lots of different reasons. If you have a big change, it's probably best to break it down into smaller, more manageable chunks, otherwise it's likely to be rejected.
 
-### Coding Standards
+## If you're not sure, ask!
 
-- Ensure code style compliance by running:
-```bash
-composer lint
-```
-- Maintain a meaningful commit history.
-- Rebase as necessary to avoid merge conflicts [(Learn more)](https://git-scm.com/book/en/v2/Git-Branching-Rebasing).
-- Follow Semantic Versioning [(SemVer)](http://semver.org/).
+Don't be afraid to ask for advice before working on a
+contribution. If you're thinking about a bigger change, especially that might
+affect the core working or architecture, it's almost essential to talk and ask
+about what you're planning might affect things. Some of the larger future plans may not be
+documented well so it's difficult to understand how your change might affect
+the general direction and roadmap of this project without asking.
 
-### Development Setup
+The preferred way to communicate is probably via Discord or GitHub issues.
 
-1. Clone your fork and install dependencies:
-```bash
-composer install
-```
-2. Lint your code:
-```bash
-composer lint
-```
-3. Run tests:
-```bash
-composer test
-```
-4. Perform static analysis:
-```bash
-composer analyse
-```
+## Mechanics of submitting a pull request
 
-### Pull Requests: One Logical Change at a Time
-
-To facilitate efficient reviews, keep PRs focused on a single logical change. Large, multifaceted PRs are difficult to review and may be rejected. If necessary, break your changes into smaller, incremental PRs.
-
-## Seeking Guidance
-
-If you are unsure about a contribution, do not hesitate to ask. Larger changes, especially those impacting core functionality or architecture, should be discussed in advance. Some long-term plans may not be fully documented, so reaching out ensures your contributions align with the project's roadmap.
-
-For discussions, GitHub issues are the preferred communication channel.
-
-## Submitting a Pull Request
-
-Before submitting a PR, please review the [pull request template](.github/PULL_REQUEST_TEMPLATE.md) to ensure compliance.
-
-## Code of Conduct
-
-This project adheres to the Laravel Code of Conduct. Any violations should be reported appropriately.
-
-- Be respectful of differing opinions.
-- Avoid personal attacks and disparaging remarks.
-- Assume good intent in discussions.
-- Harassment in any form will not be tolerated.
-
-Thank you for your contributions and for helping to improve this project!
+When you are ready for a PR, please see the [pull request template](.github/PULL_REQUEST_TEMPLATE.md).

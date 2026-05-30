@@ -8,7 +8,9 @@ class Organisation extends ModelBase
 
     public ?string $steamGroupUrl = null;
 
-    public ?string $bannerImagePngUrl = null;
+    public ?string $discordInviteUrl = null;
+
+    public ?string $image = null;
 
     public ?string $description = null;
 
@@ -20,11 +22,7 @@ class Organisation extends ModelBase
         $venue = new Venue($name);
 
         if (count($opts) > 0) {
-            foreach ($opts as $key => $value) {
-                if (property_exists($venue, $key)) {
-                    $venue->{$key} = $value;
-                }
-            }
+            self::applyOptions($venue, $opts);
         }
 
         $this->addVenue($venue);
