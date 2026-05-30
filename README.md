@@ -12,10 +12,10 @@
 
 Library major versions align with the standard major version:
 
-| Library version | Standard version |
-|-----------------|------------------|
-| v1.x            | [v1](https://github.com/jamesread/lan-party-publishing-standard/blob/main/lan-party-publishing-standard-v1.schema) |
-| v2.x            | [v2](https://github.com/jamesread/lan-party-publishing-standard/blob/main/lan-party-publishing-standard-v2.schema) |
+| Library version | Standard version | PHP |
+|-----------------|------------------|-----|
+| v1.x            | [v1](https://github.com/jamesread/lan-party-publishing-standard/blob/main/lan-party-publishing-standard-v1.schema) | ^8.1 |
+| v2.x            | [v2](https://github.com/jamesread/lan-party-publishing-standard/blob/main/lan-party-publishing-standard-v2.schema) | ^8.3 |
 
 Use v1.x of this library when publishing against standard v1. Use v2.x when publishing against standard v2. See the [standard repository](https://github.com/jamesread/lan-party-publishing-standard) for the specification, JSON schemas, and migration notes. See [CHANGELOG.md](CHANGELOG.md) for library release notes.
 
