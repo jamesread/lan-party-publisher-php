@@ -2,7 +2,6 @@
 
 require __DIR__ . '/helpers.php';
 
-use DateTime;
 use LanPartyPublisherPhp\Enums\EventAttendanceModeEnum;
 use LanPartyPublisherPhp\Enums\EventStatusEnum;
 use LanPartyPublisherPhp\Enums\TicketAvailabilityEnum;
