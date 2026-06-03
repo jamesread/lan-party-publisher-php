@@ -17,7 +17,10 @@ class Organisation extends ModelBase
     /** @var array<int, Venue> */
     public array $venues = [];
 
-    public function createVenue($name, array $opts = []): Venue
+    /**
+     * @param array<string, mixed> $opts
+     */
+    public function createVenue(string $name, array $opts = []): Venue
     {
         $venue = new Venue($name);
 

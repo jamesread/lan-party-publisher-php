@@ -62,6 +62,9 @@ class Event extends ModelBase
         $this->sleeping = SleepingEnum::NOT_ARRANGED->value;
     }
 
+    /**
+     * @param array<string, mixed> $opts
+     */
     public static function make(?string $name = null, array $opts = []): self
     {
         $event = new self($name);

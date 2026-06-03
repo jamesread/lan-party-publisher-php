@@ -13,6 +13,9 @@ class Venue extends ModelBase
     /** @var array<int, Event> */
     public array $events = [];
 
+    /**
+     * @param array<string, mixed> $opts
+     */
     public static function make(?string $name, array $opts = []): Venue
     {
         $venue = new Venue($name);
@@ -24,6 +27,9 @@ class Venue extends ModelBase
         return $venue;
     }
 
+    /**
+     * @param array<string, mixed> $opts
+     */
     public function createEvent(string $name, array $opts = []): Event
     {
         $event = new Event($name);

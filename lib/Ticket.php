@@ -20,6 +20,9 @@ class Ticket
     ) {
     }
 
+    /**
+     * @param array<string, mixed> $opts
+     */
     public static function make(string $name, array $opts = []): self
     {
         $availability = $opts['availability'] ?? null;
