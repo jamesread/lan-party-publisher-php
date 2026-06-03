@@ -4,7 +4,7 @@ use LanPartyPublisherPhp\Event;
 use LanPartyPublisherPhp\Publisher;
 use LanPartyPublisherPhp\Venue;
 
-it('produces the desired result for example `Basic Single Venue and Event`', function () {
+it('produces the desired result for example `Basic Single Venue and Event`', function (): void {
     $jsonOutput = Publisher::make()
         ->createOrganisation('Test Organisation')
         ->createVenue('Test Venue')
@@ -23,7 +23,7 @@ it('produces the desired result for example `Basic Single Venue and Event`', fun
     ]);
 });
 
-it('produces the desired result for example `Multiple Events`', function () {
+it('produces the desired result for example `Multiple Events`', function (): void {
     $publisher = Publisher::make()
         ->createOrganisation('Test Organisation')
         ->createVenue('Test Venue');
@@ -52,7 +52,7 @@ it('produces the desired result for example `Multiple Events`', function () {
     ]);
 });
 
-it('produces the desired result for example `Multiple Venues with Events`', function () {
+it('produces the desired result for example `Multiple Venues with Events`', function (): void {
     $publisher = Publisher::make()
         ->createOrganisation('Test Organisation');
 
@@ -92,8 +92,8 @@ it('produces the desired result for example `Multiple Venues with Events`', func
     ]);
 });
 
-it('produces the desired result for example `Pixel Pit` from the standard', function () {
-    expectJsonDocument(json_decode(buildPixelPitPublisher()->toJson(), true), [
+it('produces the desired result for example `Pixel Pit` from the standard', function (): void {
+    expectJsonDocument(json_decode((string) buildPixelPitPublisher()->toJson(), true), [
         ...createSchemaStructure(),
         'organisation' => expectedPixelPitOrganisation(),
     ]);

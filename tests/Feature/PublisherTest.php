@@ -3,8 +3,8 @@
 use LanPartyPublisherPhp\Publisher;
 use LanPartyPublisherPhp\Venue;
 
-describe('JSON Output', function () {
-    it('correctly outputs the `Organisation`', function () {
+describe('JSON Output', function (): void {
+    it('correctly outputs the `Organisation`', function (): void {
         $publisher = Publisher::make()
             ->createOrganisation('Test Organisation');
 
@@ -14,7 +14,7 @@ describe('JSON Output', function () {
         ]);
     });
 
-    it('correctly outputs the `Organisation` with additional data', function () {
+    it('correctly outputs the `Organisation` with additional data', function (): void {
         $publisher = Publisher::make()
             ->createOrganisation('Test Organisation', [
                 'websiteUrl' => 'https://example.com',
@@ -34,7 +34,7 @@ describe('JSON Output', function () {
         ]);
     });
 
-    it('correctly outputs the `Organisation` and `Venue`', function () {
+    it('correctly outputs the `Organisation` and `Venue`', function (): void {
         $publisher = Publisher::make()
             ->createOrganisation('Test Organisation');
 
@@ -48,7 +48,7 @@ describe('JSON Output', function () {
         ]);
     });
 
-    it('correctly outputs with the `Organisation`, `Venue` and `Event`', function () {
+    it('correctly outputs with the `Organisation`, `Venue` and `Event`', function (): void {
         $publisher = Publisher::make()
             ->createOrganisation('Test Organisation');
 
@@ -65,7 +65,7 @@ describe('JSON Output', function () {
         ]);
     });
 
-    it('correctly outputs `multiple venues`', function () {
+    it('correctly outputs `multiple venues`', function (): void {
         $publisher = Publisher::make()
             ->createOrganisation('Test Organisation');
 
@@ -83,14 +83,14 @@ describe('JSON Output', function () {
             ...createSchemaStructure(),
             'organisation' => expectedOrganisation([
                 'venues' => array_map(
-                    fn ($venue) => [...jsonSnapshot($venue), 'events' => array_map(fn ($event) => jsonSnapshot($event), $venue->events)],
+                    fn (object|array $venue): array => [...jsonSnapshot($venue), 'events' => array_map(jsonSnapshot(...), $venue->events)],
                     $venues
                 ),
             ]),
         ]);
     });
 
-    it('correctly outputs `multiple events`', function () {
+    it('correctly outputs `multiple events`', function (): void {
         $publisher = Publisher::make()
             ->createOrganisation('Test Organisation');
 
@@ -105,13 +105,13 @@ describe('JSON Output', function () {
             ...createSchemaStructure(),
             'organisation' => expectedOrganisation([
                 'venues' => [
-                    [...jsonSnapshot($venue), 'events' => array_map(fn ($event) => jsonSnapshot($event), $events)],
+                    [...jsonSnapshot($venue), 'events' => array_map(jsonSnapshot(...), $events)],
                 ],
             ]),
         ]);
     });
 
-    it('correctly outputs a `venue` with custom properties', function () {
+    it('correctly outputs a `venue` with custom properties', function (): void {
         $publisher = Publisher::make()
             ->createOrganisation('Test Organisation')
             ->createVenue('Test Venue', [
@@ -134,7 +134,7 @@ describe('JSON Output', function () {
         ]);
     });
 
-    it('correctly outputs a `event` with custom properties', function () {
+    it('correctly outputs a `event` with custom properties', function (): void {
         $publisher = Publisher::make()
             ->createOrganisation('Test Organisation')
             ->createVenue('Test Venue')
@@ -153,8 +153,8 @@ describe('JSON Output', function () {
     });
 });
 
-describe('Array Output', function () {
-    it('correctly outputs the `Organisation`', function () {
+describe('Array Output', function (): void {
+    it('correctly outputs the `Organisation`', function (): void {
         $publisher = Publisher::make()
             ->createOrganisation('Test Organisation');
 
@@ -164,7 +164,7 @@ describe('Array Output', function () {
         ]);
     });
 
-    it('correctly outputs the `Organisation` with additional data', function () {
+    it('correctly outputs the `Organisation` with additional data', function (): void {
         $publisher = Publisher::make()
             ->createOrganisation('Test Organisation', [
                 'websiteUrl' => 'https://example.com',
@@ -179,7 +179,7 @@ describe('Array Output', function () {
         ]);
     });
 
-    it('correctly outputs the `Organisation` and `Venue`', function () {
+    it('correctly outputs the `Organisation` and `Venue`', function (): void {
         $publisher = Publisher::make()
             ->createOrganisation('Test Organisation');
 
@@ -191,7 +191,7 @@ describe('Array Output', function () {
         ]);
     });
 
-    it('correctly outputs with the `Organisation`, `Venue` and `Event`', function () {
+    it('correctly outputs with the `Organisation`, `Venue` and `Event`', function (): void {
         $publisher = Publisher::make()
             ->createOrganisation('Test Organisation');
 
@@ -203,7 +203,7 @@ describe('Array Output', function () {
         ]);
     });
 
-    it('correctly outputs `multiple venues`', function () {
+    it('correctly outputs `multiple venues`', function (): void {
         $publisher = Publisher::make()
             ->createOrganisation('Test Organisation');
 
@@ -221,7 +221,7 @@ describe('Array Output', function () {
         ]);
     });
 
-    it('correctly outputs `multiple events`', function () {
+    it('correctly outputs `multiple events`', function (): void {
         $publisher = Publisher::make()
             ->createOrganisation('Test Organisation');
 
@@ -237,7 +237,7 @@ describe('Array Output', function () {
         ]);
     });
 
-    it('correctly outputs a `venue` with custom properties', function () {
+    it('correctly outputs a `venue` with custom properties', function (): void {
         $publisher = Publisher::make()
             ->createOrganisation('Test Organisation')
             ->createVenue('Test Venue', [
@@ -251,7 +251,7 @@ describe('Array Output', function () {
         ]);
     });
 
-    it('correctly outputs a `event` with custom properties', function () {
+    it('correctly outputs a `event` with custom properties', function (): void {
         $publisher = Publisher::make()
             ->createOrganisation('Test Organisation')
             ->createVenue('Test Venue')

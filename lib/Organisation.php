@@ -24,7 +24,7 @@ class Organisation extends ModelBase
     {
         $venue = new Venue($name);
 
-        if (count($opts) > 0) {
+        if ($opts !== []) {
             self::applyOptions($venue, $opts);
         }
 
@@ -44,7 +44,7 @@ class Organisation extends ModelBase
             return $this->venues[$venue];
         }
 
-        $keyName = array_search($venue, array_column($this->venues, 'name'));
+        $keyName = array_search($venue, array_column($this->venues, 'name'), true);
 
         if (array_key_exists($keyName, $this->venues)) {
             return $this->venues[$keyName];
