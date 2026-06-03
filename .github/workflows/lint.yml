@@ -6,14 +6,14 @@ permissions:
 on:
   push:
     branches:
-      - master
+      - main
     paths:
       - "**.php"
       - "composer.lock"
       - ".github/workflows/lint.yml"
   pull_request:
     branches:
-      - master
+      - main
     paths:
       - "**.php"
       - "composer.lock"
