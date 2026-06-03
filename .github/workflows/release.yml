@@ -32,6 +32,7 @@ jobs:
       - uses: ./.github/actions/setup-composer
         with:
           preferred-stability: ${{ matrix.dependency-version }}
+          php-version: ${{ matrix.php-version }}
 
       - uses: ./.github/actions/validate-composer
 

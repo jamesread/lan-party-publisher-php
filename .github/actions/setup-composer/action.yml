@@ -5,6 +5,10 @@ inputs:
     description: 'Preferred stability for Composer dependencies'
     required: false
     default: ''
+  php-version:
+    description: 'PHP version to use for installing dependencies'
+    required: false
+    default: ''
 runs:
   using: 'composite'
   steps:
@@ -13,11 +17,20 @@ runs:
       shell: bash
       run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
 
-    - name: Cache dependencies
+    - name: Cache dependencies for preferred stability ${{ inputs.preferred-stability }} PHP ${{ inputs.php-version }}
+      if: inputs.preferred-stability != ''
       uses: actions/cache@v5
       with:
         path: ${{ steps.composer-cache.outputs.dir }}
-        key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+        key: ${{ runner.os }}-composer-${{ inputs.preferred-stability }}-php-${{ inputs.php-version }}-${{ hashFiles('**/composer.lock') }}
+        restore-keys: ${{ runner.os }}-composer-${{ inputs.preferred-stability }}-php-${{ inputs.php-version }}-
+
+    - name: Cache dependencies
+      if: inputs.preferred-stability == ''
+      uses: actions/cache@v5
+      with:
+        path: ${{ steps.composer-cache.outputs.dir }}
+        key: ${{ runner.os }}-composer}-${{ hashFiles('**/composer.lock') }}
         restore-keys: ${{ runner.os }}-composer-
 
     - name: Install Composer dependencies ${{ inputs.preferred-stability }}
