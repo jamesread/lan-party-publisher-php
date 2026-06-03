@@ -1,0 +1,33 @@
+name: Setup Composer
+description: Setup Composer
+inputs:
+  preferred-stability:
+    description: 'Preferred stability for Composer dependencies'
+    required: false
+    default: ''
+runs:
+  using: 'composite'
+  steps:
+    - name: Get composer cache directory
+      id: composer-cache
+      shell: bash
+      run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
+
+    - name: Cache dependencies
+      uses: actions/cache@v5
+      with:
+        path: ${{ steps.composer-cache.outputs.dir }}
+        key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+        restore-keys: ${{ runner.os }}-composer-
+
+    - name: Install Composer dependencies ${{ inputs.preferred-stability }}
+      if: inputs.preferred-stability != ''
+      shell: bash
+      run: |
+        composer update --${{ inputs.preferred-stability }} --prefer-dist --no-interaction --no-progress -o
+
+    - name: Install Composer dependencies
+      if: inputs.preferred-stability == ''
+      shell: bash
+      run: |
+        composer install --prefer-dist --no-interaction --no-progress -o

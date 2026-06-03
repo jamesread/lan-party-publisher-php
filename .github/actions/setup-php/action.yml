@@ -1,0 +1,16 @@
+name: Setup PHP
+description: Setup PHP for testing
+inputs:
+  php-version:
+    description: 'PHP version to setup'
+    required: false
+    default: '8.5'
+runs:
+  using: 'composite'
+  steps:
+    - name: Setup PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: ${{ inputs.php-version }}
+        extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, bcmath, soap, intl, gd, exif, iconv, imagick, fileinfo
+        coverage: pcov

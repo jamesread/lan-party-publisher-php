@@ -1,34 +1,40 @@
-name: Phpstan
+name: PHPStan
+
+permissions:
+  contents: read
 
 on:
   push:
+    branches:
+      - master
     paths:
-      - '**.php'
-      - 'phpstan.neon.dist'
-      - '.github/workflows/phpstan.yml'
+      - "**.php"
+      - "phpstan.neon.dist"
+      - ".github/workflows/phpstan.yml"
+  pull_request:
+    branches:
+      - master
+    paths:
+      - "**.php"
+      - "phpstan.neon"
+      - ".github/workflows/phpstan.yml"
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   phpstan:
-    name: phpstan
+    name: PHPStan
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
-      - name: Setup PHP
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: '8.5'
-          extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, bcmath, soap, intl, gd, exif, iconv, imagick
-          coverage: none
+      - uses: ./.github/actions/setup-php
 
-      - name: Cache composer dependencies
-        uses: actions/cache@v4
-        with:
-          path: vendor
-          key: composer-${{ hashFiles('composer.lock') }}
+      - uses: ./.github/actions/setup-composer
 
-      - name: Run composer install
-        run: composer install -n --prefer-dist
+      - uses: ./.github/actions/validate-composer
 
       - name: Run phpstan
-        run: ./vendor/bin/phpstan analyse
+        run: composer analyse

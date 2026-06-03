@@ -1,0 +1,57 @@
+name: Tests
+
+permissions:
+  contents: read
+
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - "**.php"
+      - "composer.lock"
+      - ".github/workflows/test.yml"
+  pull_request:
+    branches:
+      - master
+    paths:
+      - "**.php"
+      - "composer.lock"
+      - ".github/workflows/test.yml"
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        php-version: [8.3, 8.4, 8.5]
+        dependency-version: [prefer-lowest, prefer-stable]
+
+    name: PHP ${{ matrix.php-version }} - ${{ matrix.dependency-version }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - uses: ./.github/actions/setup-php
+        with:
+          php-version: ${{ matrix.php-version }}
+
+      - uses: ./.github/actions/setup-composer
+        with:
+          preferred-stability: ${{ matrix.dependency-version }}
+
+      - uses: ./.github/actions/validate-composer
+
+      - name: Setup Problem Matches
+        run: |
+          echo "::add-matcher::${{ runner.tool_cache }}/php.json"
+          echo "::add-matcher::${{ runner.tool_cache }}/phpunit.json"
+
+      - name: Run Unit Tests
+        run: composer test

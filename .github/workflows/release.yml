@@ -1,73 +1,71 @@
-name: Release Pipeline
+name: Release
 
 on: [push, pull_request]
+
+permissions:
+  contents: write
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   build:
     runs-on: ubuntu-latest
     strategy:
-      fail-fast: false
       matrix:
-        php: [
-          8.5,
-          8.4,
-          8.3
-        ]
+        php-version: [8.3, 8.4, 8.5]
         dependency-version: [prefer-lowest, prefer-stable]
 
-    name: PHP${{ matrix.php }} - ${{ matrix.dependency-version }}
+    name: Build PHP ${{ matrix.php-version }} - ${{ matrix.dependency-version }}
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Setup PHP
-        uses: shivammathur/setup-php@v2
+      - name: Checkout codes
+        uses: actions/checkout@v6
         with:
-          php-version: ${{ matrix.php }}
-          extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, bcmath, soap, intl, gd, exif, iconv, imagick, fileinfo
-          coverage: none
+          ref: ${{ github.head_ref }}
 
-      - name: Get composer cache directory
-        id: composer-cache
-        run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
-
-      - name: Cache dependencies
-        uses: actions/cache@v4
+      - uses: ./.github/actions/setup-php
         with:
-          path: ${{ steps.composer-cache.outputs.dir }}
-          key: ${{ runner.os }}-${{ matrix.php }}-composer-${{ hashFiles('**/composer.lock') }}
-          restore-keys: ${{ runner.os }}-${{ matrix.php }}-composer-
+          php-version: ${{ matrix.php-version }}
+
+      - uses: ./.github/actions/setup-composer
+        with:
+          preferred-stability: ${{ matrix.dependency-version }}
+
+      - uses: ./.github/actions/validate-composer
+
+      - name: Fix PHP code style issues
+        uses: aglipanci/laravel-pint-action@2.6
+        with:
+          preset: psr12
+          testMode: true
+          useComposer: true
 
       - name: Setup Problem Matches
         run: |
           echo "::add-matcher::${{ runner.tool_cache }}/php.json"
           echo "::add-matcher::${{ runner.tool_cache }}/phpunit.json"
 
-      - name: Install dependencies
-        run: composer update --${{ matrix.dependency-version }} --prefer-dist --no-interaction
-
       - name: Run phpstan
-        run: make phpstan
+        run: composer analyse
 
-      - name: Run phpcs
-        run: make lint
-
-      - name: Run test suite
-        run: make tests
+      - name: Run Unit Tests
+        run: composer test
 
   release:
-     runs-on: ubuntu-latest
-     needs: [build]
-     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+    runs-on: ubuntu-latest
+    needs: build
+    name: Create Release
+    steps:
+      - name: Checkout codes
+        uses: actions/checkout@v6
+        with:
+          ref: ${{ github.head_ref }}
 
       - name: release
-        uses: cycjimmy/semantic-release-action@v4.2.0
+        uses: cycjimmy/semantic-release-action@v6
         with:
-          semantic_version: 24.2.3 # https://github.com/cycjimmy/semantic-release-action/issues/243
-
+          branch: master
         env:
-          GH_TOKEN: ${{ secrets.CONTAINER_TOKEN }}
-          GITHUB_TOKEN: ${{ secrets.CONTAINER_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
