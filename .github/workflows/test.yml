@@ -10,6 +10,7 @@ on:
     paths:
       - "**.php"
       - "composer.lock"
+      - ".github/actions/**"
       - ".github/workflows/test.yml"
   pull_request:
     branches:
@@ -17,6 +18,7 @@ on:
     paths:
       - "**.php"
       - "composer.lock"
+      - ".github/actions/**"
       - ".github/workflows/test.yml"
 
 concurrency:
