@@ -40,6 +40,9 @@ jobs:
 
       - uses: ./.github/actions/validate-composer
 
+      - name: Rector Dry Run
+        run: composer refactor:test
+
       - name: Fix PHP code style issues
         uses: aglipanci/laravel-pint-action@2.6
         with:
