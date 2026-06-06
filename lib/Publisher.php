@@ -16,6 +16,9 @@ class Publisher
         return new self();
     }
 
+    /**
+     * @param array<string, mixed> $opts
+     */
     public function createOrganisation(string $name, array $opts = []): self
     {
         $this->organizer = new Organisation($name);
@@ -27,6 +30,9 @@ class Publisher
         return $this;
     }
 
+    /**
+     * @param array<string, mixed> $opts
+     */
     public function createVenue(string $name, array $opts = []): self
     {
         $this->organizer->createVenue($name, $opts);
@@ -34,6 +40,9 @@ class Publisher
         return $this;
     }
 
+    /**
+     * @param array<int, Venue> $venues
+     */
     public function addVenues(array $venues): self
     {
         foreach ($venues as $venue) {
@@ -43,6 +52,9 @@ class Publisher
         return $this;
     }
 
+    /**
+     * @param array<string, mixed> $opts
+     */
     public function createEvent(int|string $venue, string $name, array $opts = []): self
     {
         $venue = $this->organizer->getVenue($venue);
@@ -56,6 +68,9 @@ class Publisher
         return $this;
     }
 
+    /**
+     * @param array<int, Event> $events
+     */
     public function addEvents(int|string $venue, array $events): self
     {
         $venue = $this->organizer->getVenue($venue);
@@ -76,6 +91,9 @@ class Publisher
         return $this->organizer;
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public function toArray(): array
     {
         $generator = 'lan-party-publisher-php ' . InstalledVersions::getVersion('jamesread/lan-party-publisher-php');
@@ -94,6 +112,10 @@ class Publisher
         return json_encode(self::omitNulls($data), JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
     }
 
+    /**
+     * @param array<string, mixed> $data
+     * @return array<string, mixed>
+     */
     public static function omitNulls(array $data): array
     {
         $result = [];

@@ -43,6 +43,9 @@ class ModelBase
         return $dateTime->format('Y-m-d\TH:i:s');
     }
 
+    /**
+     * @param array<string, mixed> $opts
+     */
     public static function applyOptions(object $target, array $opts): void
     {
         foreach ($opts as $key => $value) {
