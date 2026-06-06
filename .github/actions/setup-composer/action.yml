@@ -1,0 +1,46 @@
+name: Setup Composer
+description: Setup Composer
+inputs:
+  preferred-stability:
+    description: 'Preferred stability for Composer dependencies'
+    required: false
+    default: ''
+  php-version:
+    description: 'PHP version to use for installing dependencies'
+    required: false
+    default: ''
+runs:
+  using: 'composite'
+  steps:
+    - name: Get composer cache directory
+      id: composer-cache
+      shell: bash
+      run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
+
+    - name: Cache dependencies for preferred stability ${{ inputs.preferred-stability }} PHP ${{ inputs.php-version }}
+      if: inputs.preferred-stability != ''
+      uses: actions/cache@v5
+      with:
+        path: ${{ steps.composer-cache.outputs.dir }}
+        key: ${{ runner.os }}-composer-${{ inputs.preferred-stability }}-php-${{ inputs.php-version }}-${{ hashFiles('**/composer.lock') }}
+        restore-keys: ${{ runner.os }}-composer-${{ inputs.preferred-stability }}-php-${{ inputs.php-version }}-
+
+    - name: Cache dependencies
+      if: inputs.preferred-stability == ''
+      uses: actions/cache@v5
+      with:
+        path: ${{ steps.composer-cache.outputs.dir }}
+        key: ${{ runner.os }}-composer-fixed-${{ hashFiles('**/composer.lock') }}
+        restore-keys: ${{ runner.os }}-composer-fixed-
+
+    - name: Install Composer dependencies ${{ inputs.preferred-stability }}
+      if: inputs.preferred-stability != ''
+      shell: bash
+      run: |
+        composer update --${{ inputs.preferred-stability }} --prefer-dist --no-interaction --no-progress -o
+
+    - name: Install Composer dependencies
+      if: inputs.preferred-stability == ''
+      shell: bash
+      run: |
+        composer install --prefer-dist --no-interaction --no-progress -o

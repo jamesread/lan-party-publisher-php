@@ -1,44 +1,48 @@
 name: Check & fix styling
 
-on: [push]
+permissions:
+  contents: read
+
+on:
+  push:
+    branches-ignore:
+      - main
+    paths:
+      - "**.php"
+      - "composer.lock"
+      - ".github/actions/**"
+      - ".github/workflows/lint.yml"
+  pull_request:
+    branches:
+      - main
+    paths:
+      - "**.php"
+      - "composer.lock"
+      - ".github/actions/**"
+      - ".github/workflows/lint.yml"
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   php-lint:
+    name: Check & fix styling
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
-        with:
-          ref: ${{ github.head_ref }}
+        uses: actions/checkout@v6
 
-      - name: Setup PHP
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: 8.5
-          extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, bcmath, soap, intl, gd, exif, iconv, imagick, fileinfo
-          coverage: none
+      - uses: ./.github/actions/setup-php
 
-      - name: Get composer cache directory
-        id: composer-cache
-        run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
+      - uses: ./.github/actions/setup-composer
 
-      - name: Cache dependencies
-        uses: actions/cache@v4
-        with:
-          path: ${{ steps.composer-cache.outputs.dir }}
-          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
-          restore-keys: ${{ runner.os }}-composer-
-
-      - name: Install Composer dependencies
-        run: |
-          composer install --no-progress --no-scripts -n -o
+      - uses: ./.github/actions/validate-composer
 
       - name: Fix PHP code style issues
-        uses: aglipanci/laravel-pint-action@2.5
+        uses: aglipanci/laravel-pint-action@2.6
         with:
           preset: psr12
-          pintVersion: 1.29.0
           testMode: true
           useComposer: true
-

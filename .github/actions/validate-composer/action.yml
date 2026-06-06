@@ -1,0 +1,8 @@
+name: Validate Composer
+description: Validate Composer
+runs:
+  using: 'composite'
+  steps:
+    - name: Validate Composer
+      shell: bash
+      run: composer validate --strict
