@@ -22,7 +22,7 @@ class Venue extends ModelBase
     {
         $venue = new Venue($name);
 
-        if ($opts !== []) {
+        if (!empty($opts)) {
             self::applyOptions($venue, $opts);
         }
 
@@ -36,7 +36,7 @@ class Venue extends ModelBase
     {
         $event = new Event($name);
 
-        if ($opts !== []) {
+        if (!empty($opts)) {
             self::applyOptions($event, $opts);
         }
 

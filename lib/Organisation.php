@@ -24,7 +24,7 @@ class Organisation extends ModelBase
     {
         $venue = new Venue($name);
 
-        if ($opts !== []) {
+        if (!empty($opts)) {
             self::applyOptions($venue, $opts);
         }
 

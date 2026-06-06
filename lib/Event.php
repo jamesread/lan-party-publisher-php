@@ -69,7 +69,7 @@ class Event extends ModelBase
     {
         $event = new self($name);
 
-        if ($opts !== []) {
+        if (!empty($opts)) {
             self::applyOptions($event, $opts);
         }
 

@@ -23,7 +23,7 @@ class Publisher
     {
         $this->organizer = new Organisation($name);
 
-        if ($opts !== []) {
+        if (!empty($opts)) {
             ModelBase::applyOptions($this->organizer, $opts);
         }
 
