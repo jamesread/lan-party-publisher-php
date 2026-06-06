@@ -8,7 +8,7 @@ use ReflectionClass;
 
 class ModelBase
 {
-    private const DATE_TIME_PROPERTIES = [
+    private const array DATE_TIME_PROPERTIES = [
         'startDate',
         'endDate',
         'previousStartDate',
@@ -54,11 +54,7 @@ class ModelBase
             }
 
             if (in_array($key, self::DATE_TIME_PROPERTIES, true)) {
-                if ($value instanceof DateTime) {
-                    $target->{$key} = self::formatDateTime($value);
-                } else {
-                    $target->{$key} = $value;
-                }
+                $target->{$key} = $value instanceof DateTime ? self::formatDateTime($value) : $value;
 
                 continue;
             }

@@ -2,6 +2,7 @@
 
 namespace LanPartyPublisherPhp;
 
+use InvalidArgumentException;
 use BackedEnum;
 use DateTime;
 
@@ -32,7 +33,7 @@ class Ticket
         }
 
         if (! is_string($availability)) {
-            throw new \InvalidArgumentException('Ticket availability is required');
+            throw new InvalidArgumentException('Ticket availability is required');
         }
 
         $ticket = new self(
@@ -50,11 +51,7 @@ class Ticket
 
             $value = $opts[$key];
 
-            if ($value instanceof DateTime) {
-                $ticket->{$key} = ModelBase::formatDateTime($value);
-            } else {
-                $ticket->{$key} = $value;
-            }
+            $ticket->{$key} = $value instanceof DateTime ? ModelBase::formatDateTime($value) : $value;
         }
 
         return $ticket;
