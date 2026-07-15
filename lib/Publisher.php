@@ -23,7 +23,7 @@ class Publisher
     {
         $this->organizer = new Organisation($name);
 
-        if (count($opts) > 0) {
+        if (!empty($opts)) {
             ModelBase::applyOptions($this->organizer, $opts);
         }
 
@@ -125,11 +125,7 @@ class Publisher
                 continue;
             }
 
-            if (is_array($value)) {
-                $result[$key] = self::omitNulls($value);
-            } else {
-                $result[$key] = $value;
-            }
+            $result[$key] = is_array($value) ? self::omitNulls($value) : $value;
         }
 
         return $result;

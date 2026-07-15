@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace LanPartyPublisherPhp;
 
 class Venue extends ModelBase
@@ -20,7 +22,7 @@ class Venue extends ModelBase
     {
         $venue = new Venue($name);
 
-        if (count($opts) > 0) {
+        if (!empty($opts)) {
             self::applyOptions($venue, $opts);
         }
 
@@ -34,7 +36,7 @@ class Venue extends ModelBase
     {
         $event = new Event($name);
 
-        if (count($opts) > 0) {
+        if (!empty($opts)) {
             self::applyOptions($event, $opts);
         }
 

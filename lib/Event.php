@@ -69,7 +69,7 @@ class Event extends ModelBase
     {
         $event = new self($name);
 
-        if (count($opts) > 0) {
+        if (!empty($opts)) {
             self::applyOptions($event, $opts);
         }
 
